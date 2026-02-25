@@ -2,19 +2,21 @@ const { chat } = require('./gemini')
 const { getSesion, agregarMensaje } = require('./sessions')
 
 async function procesarMensaje(sessionId, mensajeUsuario) {
-  // Traemos el historial de esta sesión
   const historial = getSesion(sessionId)
-
-  // Agregamos el mensaje del usuario al historial
   agregarMensaje(sessionId, 'user', mensajeUsuario)
 
-  // Le mandamos el historial completo a Gemini y esperamos la respuesta
-  const respuesta = await chat(getSesion(sessionId))
-
-  // Guardamos la respuesta del modelo en el historial
-  agregarMensaje(sessionId, 'model', respuesta)
-
-  return respuesta
+  try {
+    const respuesta = await chat(getSesion(sessionId))
+    agregarMensaje(sessionId, 'model', respuesta)
+    return respuesta
+  } catch (error) {
+    // Si se agotó la cuota de la API
+    if (error.status === 429) {
+      return 'En este momento el asistente está temporalmente fuera de servicio. Por favor comunicarse directamente al consultorio al +54 11 4567-8900. Disculpe las molestias.'
+    }
+    // Cualquier otro error
+    throw error
+  }
 }
 
 module.exports = { procesarMensaje }
