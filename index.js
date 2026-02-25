@@ -25,7 +25,23 @@ app.post('/chat', async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor' })
   }
 })
+// Endpoint para recibir mensajes de WhatsApp via Twilio
+app.post('/whatsapp', async (req, res) => {
+  const mensaje = req.body.Body
+  const sessionId = req.body.From // El número de WhatsApp del usuario
 
+  try {
+    const respuesta = await procesarMensaje(sessionId, mensaje)
+
+    // Twilio espera la respuesta en formato TwiML XML
+    res.set('Content-Type', 'text/xml')
+    res.send(`<Response><Message>${respuesta}</Message></Response>`)
+  } catch (error) {
+    console.error('Error WhatsApp:', error)
+    res.set('Content-Type', 'text/xml')
+    res.send(`<Response><Message>Lo siento, hubo un error. Intentá de nuevo.</Message></Response>`)
+  }
+})
 // Health check — útil para Render/Railway
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' })
