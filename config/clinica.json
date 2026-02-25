@@ -1,0 +1,15 @@
+{
+  "nombre": "Consultorio Dra. García",
+  "especialidad": "Medicina General",
+  "direccion": "Av. Corrientes 1234, CABA",
+  "telefono": "+54 11 4567-8900",
+  "horarios": {
+    "lunes_viernes": "8:00 a 20:00",
+    "sabados": "9:00 a 13:00",
+    "domingos": "cerrado"
+  },
+  "obras_sociales": ["OSDE", "Swiss Medical", "Galeno", "IOMA", "PAMI", "Medicus"],
+  "valor_consulta_particular": "$15.000",
+  "duracion_turno": "30 minutos",
+  "formas_de_pago": ["Efectivo", "Transferencia bancaria", "Mercado Pago"]
+}
