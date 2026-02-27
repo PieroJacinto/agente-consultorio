@@ -9,35 +9,42 @@ async function procesarMensaje(sessionId, mensajeUsuario, clinica) {
   try {
     const respuestaRaw = await chat(getSesion(sessionId), clinica)
 
-    // Detectamos si hay un bloque de turno en la respuesta
     const tieneTurno = respuestaRaw.includes('%%TURNO%%')
     let respuestaLimpia = respuestaRaw
 
     if (tieneTurno) {
       try {
-        // Extraemos el JSON entre los delimitadores
         const partes = respuestaRaw.split('%%TURNO%%')
         const jsonTurno = partes[1].trim()
         const datosTurno = JSON.parse(jsonTurno)
 
-        // Guardamos el turno en la base de datos
         await guardarTurno({
           clienteId: clinica.id,
           nombre: datosTurno.nombre,
-          telefono: sessionId, // el sessionId en WhatsApp es el número del paciente
+          telefono: sessionId,
           obraSocial: datosTurno.obraSocial,
           fecha: null,
           horario: datosTurno.horario
         })
 
         console.log(`📅 Turno guardado para ${datosTurno.nombre} en ${clinica.nombre}`)
-
-        // Limpiamos el bloque JSON de la respuesta que ve el paciente
         respuestaLimpia = partes[0].trim()
+
       } catch (errorTurno) {
-        console.error('Error al guardar turno:', errorTurno)
-        // Si falla el guardado, igual respondemos normalmente
-        respuestaLimpia = respuestaRaw.split('%%TURNO%%')[0].trim()
+        if (errorTurno.message.startsWith('HORARIO_OCUPADO:')) {
+          const horarioOcupado = errorTurno.message.split(':')[1]
+          console.warn(`⚠️  Horario ocupado: ${horarioOcupado}`)
+
+          // Le avisamos al agente que el horario está ocupado para que ofrezca otro
+          const mensajeError = `El sistema indica que el horario ${horarioOcupado} ya está ocupado. Informale al paciente y ofrecele los otros horarios disponibles.`
+          agregarMensaje(sessionId, 'user', mensajeError)
+          const respuestaAlternativa = await chat(getSesion(sessionId), clinica)
+          respuestaLimpia = respuestaAlternativa.split('%%TURNO%%')[0].trim()
+
+        } else {
+          console.error('Error al guardar turno:', errorTurno)
+          respuestaLimpia = partes[0].trim()
+        }
       }
     }
 
