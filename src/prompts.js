@@ -1,6 +1,4 @@
-const clinica = require('../config/clinica.json')
-
-function getSystemPrompt() {
+function getSystemPrompt(clinica) {
   return `
 Sos un asistente virtual amable y profesional del ${clinica.nombre}, un consultorio de ${clinica.especialidad} ubicado en ${clinica.direccion}.
 
