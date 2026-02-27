@@ -1,6 +1,7 @@
 const { chat } = require('./gemini')
 const { getSesion, agregarMensaje } = require('./sessions')
 const { guardarTurno } = require('./db')
+const { agregarTurnoSheet } = require('./sheets')
 
 async function procesarMensaje(sessionId, mensajeUsuario, clinica) {
   const historial = getSesion(sessionId)
@@ -18,7 +19,7 @@ async function procesarMensaje(sessionId, mensajeUsuario, clinica) {
         const jsonTurno = partes[1].trim()
         const datosTurno = JSON.parse(jsonTurno)
 
-        await guardarTurno({
+        const turnoGuardado = await guardarTurno({
           clienteId: clinica.id,
           nombre: datosTurno.nombre,
           telefono: sessionId,
@@ -28,6 +29,10 @@ async function procesarMensaje(sessionId, mensajeUsuario, clinica) {
         })
 
         console.log(`📅 Turno guardado para ${datosTurno.nombre} en ${clinica.nombre}`)
+
+        // Sincronizamos a Google Sheets (no bloqueante)
+        agregarTurnoSheet(turnoGuardado).catch(console.error)
+
         respuestaLimpia = partes[0].trim()
 
       } catch (errorTurno) {
@@ -35,7 +40,6 @@ async function procesarMensaje(sessionId, mensajeUsuario, clinica) {
           const horarioOcupado = errorTurno.message.split(':')[1]
           console.warn(`⚠️  Horario ocupado: ${horarioOcupado}`)
 
-          // Le avisamos al agente que el horario está ocupado para que ofrezca otro
           const mensajeError = `El sistema indica que el horario ${horarioOcupado} ya está ocupado. Informale al paciente y ofrecele los otros horarios disponibles.`
           agregarMensaje(sessionId, 'user', mensajeError)
           const respuestaAlternativa = await chat(getSesion(sessionId), clinica)

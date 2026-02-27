@@ -3,6 +3,7 @@ const express = require('express')
 const { procesarMensaje } = require('./src/agent')
 const { getCliente } = require('./src/clientes')
 const { inicializarDB, getTurnosPorCliente } = require('./src/db')
+const { inicializarSheet } = require('./src/sheets')
 
 const app = express()
 app.use(express.json())
@@ -10,6 +11,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.static('public'))
 
 inicializarDB().catch(console.error)
+inicializarSheet().catch(console.error)
 
 const PORT = process.env.PORT || 3000
 
