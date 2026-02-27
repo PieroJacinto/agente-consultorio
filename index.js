@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const { procesarMensaje } = require('./src/agent')
 const { getCliente } = require('./src/clientes')
-const { inicializarDB } = require('./src/db')
+const { inicializarDB, getTurnosPorCliente } = require('./src/db')
 
 const app = express()
 app.use(express.json())
@@ -59,6 +59,13 @@ app.post('/whatsapp', async (req, res) => {
     res.set('Content-Type', 'text/xml')
     res.send(`<Response><Message>Lo siento, hubo un error. Intentá de nuevo.</Message></Response>`)
   }
+})
+
+// Endpoint para ver turnos de un cliente (temporal, para testing)
+app.get('/turnos/:clienteId', async (req, res) => {
+  const { clienteId } = req.params
+  const turnos = await getTurnosPorCliente(clienteId)
+  res.json({ total: turnos.length, turnos })
 })
 
 app.get('/health', (req, res) => {
