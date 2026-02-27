@@ -1,11 +1,23 @@
 require('dotenv').config()
 const express = require('express')
+const cors = require('cors')
 const { procesarMensaje } = require('./src/agent')
 const { getCliente } = require('./src/clientes')
 const { inicializarDB, getTurnosPorCliente } = require('./src/db')
 const { inicializarSheet } = require('./src/sheets')
 
 const app = express()
+
+// CORS: permite requests desde la landing en Vercel y localhost
+app.use(cors({
+  origin: [
+    'https://consultia-landing.vercel.app',
+    'http://localhost:3000',
+    'http://127.0.0.1:5500',
+    'http://localhost:5500'
+  ]
+}))
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static('public'))
@@ -70,6 +82,7 @@ app.get('/turnos/:clienteId', async (req, res) => {
   res.json({ total: turnos.length, turnos })
 })
 
+// Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' })
 })
