@@ -2,11 +2,14 @@ require('dotenv').config()
 const express = require('express')
 const { procesarMensaje } = require('./src/agent')
 const { getCliente } = require('./src/clientes')
+const { inicializarDB } = require('./src/db')
 
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static('public'))
+
+inicializarDB().catch(console.error)
 
 const PORT = process.env.PORT || 3000
 
