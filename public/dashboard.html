@@ -635,34 +635,52 @@
 
     const horas = Array.from(horasSet).sort()
     const dias  = Array.from({length:6}, (_,i) => { const d=new Date(lun); d.setDate(lun.getDate()+i); return d })
+    const grid  = document.getElementById('semana-grid')
+    grid.innerHTML = ''
 
-    let html = '<div class="sg-empty"></div>'
+    // Celda vacía esquina
+    const empty = document.createElement('div')
+    empty.className = 'sg-empty'
+    grid.appendChild(empty)
+
+    // Headers de días
     dias.forEach(d => {
       const esHoy = fmt(d)===hoy
-      html += `<div class="sg-header${esHoy?' hoy':''}">
-        <div class="sg-dia-nom">${DIAS[d.getDay()===0?6:d.getDay()-1]}</div>
-        <div class="sg-dia-num">${d.getDate()}</div>
-      </div>`
+      const h = document.createElement('div')
+      h.className = 'sg-header' + (esHoy?' hoy':'')
+      h.innerHTML = `<div class="sg-dia-nom">${DIAS[d.getDay()===0?6:d.getDay()-1]}</div><div class="sg-dia-num">${d.getDate()}</div>`
+      grid.appendChild(h)
     })
 
+    // Filas de horarios
     horas.forEach(hora => {
-      html += `<div class="sg-hora">${hora}</div>`
+      const horaEl = document.createElement('div')
+      horaEl.className = 'sg-hora'
+      horaEl.textContent = hora
+      grid.appendChild(horaEl)
+
       dias.forEach(d => {
         const t = mapa[`${fmt(d)}_${hora}`]
+        const cell = document.createElement('div')
+
         if (t) {
-          html += `<div class="sg-cell ocupado">
-            <div class="sg-turno${t.origen==='secretaria'?' secretaria':''}">
-              <div style="font-weight:600">${t.paciente_nombre.split(' ')[0]}</div>
-              <div style="opacity:.75;font-size:10px">${t.obra_social||'Part.'}</div>
-            </div>
-          </div>`
+          cell.className = 'sg-cell ocupado'
+          cell.style.cursor = 'pointer'
+          const inner = document.createElement('div')
+          inner.className = 'sg-turno' + (t.origen==='secretaria'?' secretaria':'')
+          inner.innerHTML = `<div style="font-weight:600">${t.paciente_nombre.split(' ')[0]}</div><div style="opacity:.75;font-size:10px">${t.obra_social||'Part.'}</div>`
+          cell.appendChild(inner)
+          // Click abre modal de detalle
+          cell.addEventListener('click', () => abrirDetalle(t))
         } else {
-          html += `<div class="sg-cell" onclick="irANuevoConFechaHora('${fmt(d)}','${hora}')"></div>`
+          cell.className = 'sg-cell'
+          const dStr = fmt(d)
+          cell.addEventListener('click', () => irANuevoConFechaHora(dStr, hora))
         }
+
+        grid.appendChild(cell)
       })
     })
-
-    document.getElementById('semana-grid').innerHTML = html
   }
 
   // ── CANCELAR ──────────────────────────────────────────────────────────────────
@@ -736,6 +754,21 @@
     } catch(e) { if(e.message!=='Sesión expirada') toast('Error de conexión','err') }
     finally { btn.textContent='Guardar turno'; btn.disabled=false }
   })
+
+  // ── LISTENERS MODAL (aquí, después de que el DOM ya existe) ─────────────────────
+  document.getElementById('btn-modal-cerrar').addEventListener('click', cerrarModal)
+  document.getElementById('btn-modal-close').addEventListener('click', cerrarModal)
+  document.getElementById('modal-detalle').addEventListener('click', function(e) {
+    if (e.target === this) cerrarModal()
+  })
+  document.getElementById('btn-modal-cancelar').addEventListener('click', () => {
+    if (!turnoActivo) return
+    const t = turnoActivo
+    cerrarModal()
+    confirmarCancel(t.id, t.paciente_nombre)
+  })
+  // Cerrar con Escape
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarModal() })
 
   // ── ARRANQUE ──────────────────────────────────────────────────────────────────
   if (token && usuario) arrancarApp()
