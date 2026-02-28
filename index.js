@@ -5,11 +5,10 @@ const { procesarMensaje } = require('./src/agent')
 const { getCliente } = require('./src/clientes')
 const { inicializarDB, getTurnosPorCliente } = require('./src/db')
 const { inicializarSheet } = require('./src/sheets')
-const dashboardRouter = require('./src/dashboard')   // ← NUEVO
+const dashboardRouter = require('./src/dashboard')
 
 const app = express()
 
-// CORS: permite requests desde la landing en Vercel y localhost
 app.use(cors({
   origin: [
     'https://consultia-landing.vercel.app',
@@ -31,12 +30,12 @@ const PORT = process.env.PORT || 3000
 // Endpoint web — siempre usa el cliente "demo"
 app.post('/chat', async (req, res) => {
   const { sessionId, mensaje } = req.body
-
   if (!sessionId || !mensaje) {
     return res.status(400).json({ error: 'Faltan campos: sessionId y mensaje son requeridos' })
   }
 
-  const clinica = getCliente('demo')
+  // getCliente ahora es async
+  const clinica = await getCliente('demo')
   if (!clinica) {
     return res.status(500).json({ error: 'Configuración del cliente no encontrada' })
   }
@@ -50,19 +49,19 @@ app.post('/chat', async (req, res) => {
   }
 })
 
-// Endpoint WhatsApp — identifica el cliente por el número destino (req.body.To)
+// Endpoint WhatsApp — identifica el cliente por el número destino
 app.post('/whatsapp', async (req, res) => {
-  const mensaje = req.body.Body
-  const sessionId = req.body.From  // número del paciente (quién escribe)
-  const destinatario = req.body.To  // número del consultorio (a quién le escriben)
+  const mensaje      = req.body.Body
+  const sessionId    = req.body.From
+  const destinatario = req.body.To
 
   console.log(`📱 Mensaje de ${sessionId} para ${destinatario}: ${mensaje}`)
 
-  const clinica = getCliente(destinatario)
-
+  // getCliente ahora es async
+  const clinica = await getCliente(destinatario)
   if (!clinica) {
     res.set('Content-Type', 'text/xml')
-    return res.send(`<Response><Message>Lo siento, este número no está configurado. Por favor contacte al administrador.</Message></Response>`)
+    return res.send(`<Response><Message>Lo siento, este número no está configurado.</Message></Response>`)
   }
 
   try {
@@ -76,23 +75,19 @@ app.post('/whatsapp', async (req, res) => {
   }
 })
 
-// ─── DASHBOARD ────────────────────────────────────────────────────────────────
-app.use('/api/dashboard', dashboardRouter)                                // ← NUEVO
-app.get('/dashboard', (req, res) => {                                     // ← NUEVO
-  res.sendFile('dashboard.html', { root: 'public' })                     // ← NUEVO
-})                                                                        // ← NUEVO
+// Dashboard
+app.use('/api/dashboard', dashboardRouter)
+app.get('/dashboard', (req, res) => {
+  res.sendFile('dashboard.html', { root: 'public' })
+})
 
-// Endpoint para ver turnos de un cliente (temporal, para testing)
+// Ver turnos de un cliente (testing)
 app.get('/turnos/:clienteId', async (req, res) => {
-  const { clienteId } = req.params
-  const turnos = await getTurnosPorCliente(clienteId)
+  const turnos = await getTurnosPorCliente(req.params.clienteId)
   res.json({ total: turnos.length, turnos })
 })
 
-// Health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok' })
-})
+app.get('/health', (req, res) => res.json({ status: 'ok' }))
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`)
