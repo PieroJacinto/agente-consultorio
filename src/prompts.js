@@ -1,6 +1,7 @@
-const clinica = require('../config/clinica.json')
+// CAMBIO: ya no importa clinica.json — recibe el objeto clinica como parámetro
+// Esto es necesario para el sistema multi-tenant donde cada cliente tiene su propia config
 
-function getSystemPrompt() {
+function getSystemPrompt(clinica) {
   return `
 Sos un asistente virtual amable y profesional del ${clinica.nombre}, un consultorio de ${clinica.especialidad} ubicado en ${clinica.direccion}.
 

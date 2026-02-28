@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ConsultIA — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#0a0f1a; --surface:#111827; --surface2:#1a2335; --border:#1e2d45;
+      --accent:#00d4aa; --accent2:#0077ff; --danger:#ff4757;
+      --text:#e8eef7; --muted:#6b7fa3; --cs:dark;
+    }
+    [data-theme="light"] {
+      --bg:#f0f4f8; --surface:#ffffff; --surface2:#e4eaf3; --border:#c8d5e8;
+      --accent:#009e7f; --accent2:#0055cc; --danger:#d63040;
+      --text:#111827; --muted:#556a8a; --cs:light;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .2s,color .2s;}
+
+    /* LOGIN */
+    #login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 30% 50%,#0a2040,#0a0f1a);}
+    [data-theme="light"] #login-screen{background:radial-gradient(ellipse at 30% 50%,#c8e0f8,#f0f4f8);}
+    .login-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px;width:100%;max-width:400px;box-shadow:0 0 80px #00000022;}
+    .login-logo{font-family:'DM Serif Display',serif;font-size:30px;color:var(--accent);margin-bottom:4px;}
+    .login-sub{color:var(--muted);font-size:13px;margin-bottom:32px;}
+    .error-msg{background:#ff475720;border:1px solid #ff475740;color:var(--danger);border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:14px;display:none;}
+
+    /* FORMS */
+    .form-group{margin-bottom:15px;}
+    .form-group label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px;}
+    .form-group input,.form-group select,.form-group textarea{
+      width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;
+      padding:11px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;
+      outline:none;transition:border-color .2s;color-scheme:var(--cs);
+    }
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--accent);}
+    .form-group select option{background:var(--surface);color:var(--text);}
+    .form-group textarea{resize:vertical;min-height:68px;}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .req{color:var(--accent);margin-left:2px;}
+
+    /* BUTTONS */
+    .btn{padding:12px 18px;border-radius:10px;border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;}
+    .btn-full{width:100%;}
+    .btn-primary{background:var(--accent);color:#0a0f1a;}
+    .btn-primary:hover{filter:brightness(1.1);}
+    .btn-danger{background:transparent;border:1px solid var(--danger);color:var(--danger);padding:6px 13px;font-size:12px;border-radius:7px;}
+    .btn-danger:hover{background:var(--danger);color:#fff;}
+    .btn-outline{background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:8px 16px;font-size:13px;border-radius:8px;}
+    .btn-outline:hover{border-color:var(--accent);color:var(--accent);}
+
+    /* SIDEBAR */
+    #app{display:none;min-height:100vh;}
+    .sidebar{position:fixed;top:0;left:0;width:230px;height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 16px;display:flex;flex-direction:column;z-index:100;transition:background .2s;}
+    .sidebar-logo{font-family:'DM Serif Display',serif;font-size:22px;color:var(--accent);}
+    .sidebar-clinica{font-size:11px;color:var(--muted);margin-bottom:28px;margin-top:2px;}
+    .nav-section{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding-left:8px;margin-bottom:6px;}
+    .nav-item{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:8px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left;margin-bottom:2px;}
+    .nav-item:hover{background:var(--surface2);color:var(--text);}
+    .nav-item.active{background:#00d4aa18;color:var(--accent);}
+    .sidebar-footer{margin-top:auto;border-top:1px solid var(--border);padding-top:14px;display:flex;flex-direction:column;gap:8px;}
+    .user-name{font-size:13px;font-weight:600;}
+    .user-rol{font-size:11px;color:var(--muted);}
+    .sidebar-actions{display:flex;gap:6px;margin-top:2px;}
+    .btn-small{background:none;border:1px solid var(--border);color:var(--muted);padding:5px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;}
+    .btn-small:hover{border-color:var(--accent);color:var(--accent);}
+    .btn-small.logout:hover{border-color:var(--danger);color:var(--danger);}
+
+    /* MAIN */
+    .main{margin-left:230px;padding:28px 32px;}
+    .page{display:none;}.page.active{display:block;}
+    .page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;}
+    .page-title{font-family:'DM Serif Display',serif;font-size:26px;}
+    .page-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+
+    /* TOGGLE */
+    .toggle{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:3px;gap:3px;}
+    .toggle-btn{padding:7px 16px;border-radius:7px;border:none;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;background:transparent;color:var(--muted);transition:all .15s;}
+    .toggle-btn.active{background:var(--accent);color:#0a0f1a;}
+
+    /* FECHA NAV */
+    .fecha-nav{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+    .fecha-nav button{background:var(--surface);border:1px solid var(--border);color:var(--text);width:32px;height:32px;border-radius:7px;cursor:pointer;font-size:15px;transition:border-color .15s;display:flex;align-items:center;justify-content:center;}
+    .fecha-nav button:hover{border-color:var(--accent);}
+    .fecha-label{font-family:'DM Serif Display',serif;font-size:17px;min-width:240px;}
+    .btn-hoy{background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:7px;cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;transition:all .15s;}
+    .btn-hoy:hover{border-color:var(--accent);color:var(--accent);}
+
+    /* STATS */
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px;}
+    .stat{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:18px;}
+    .stat-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;}
+    .stat-value{font-family:'DM Serif Display',serif;font-size:30px;color:var(--accent);}
+    .stat-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+
+    /* SLOTS */
+    .slots{display:flex;flex-direction:column;gap:8px;}
+    .slot{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:14px 18px;}
+    .slot-hora{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--accent);min-width:52px;font-weight:500;}
+    .slot-info{flex:1;}
+    .slot-paciente{font-size:14px;font-weight:600;}
+    .slot-det{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.7;}
+    .badge{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:3px 8px;border-radius:20px;white-space:nowrap;}
+    .badge-agente{background:#00d4aa18;border:1px solid #00d4aa44;color:var(--accent);}
+    .badge-secretaria{background:#0077ff18;border:1px solid #0077ff44;color:var(--accent2);}
+
+    /* SEMANA */
+    .semana-grid{display:grid;grid-template-columns:52px repeat(6,1fr);gap:1px;background:var(--border);border-radius:12px;overflow:hidden;border:1px solid var(--border);}
+    .sg-empty{background:var(--surface);}
+    .sg-header{background:var(--surface);padding:12px 8px;text-align:center;}
+    .sg-dia-nom{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);}
+    .sg-dia-num{font-family:'DM Serif Display',serif;font-size:20px;margin-top:1px;}
+    .sg-header.hoy .sg-dia-num{color:var(--accent);}
+    .sg-hora{background:var(--surface);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);padding:6px 0;}
+    .sg-cell{background:var(--surface);padding:5px;min-height:54px;cursor:pointer;transition:background .1s;}
+    .sg-cell:hover{background:var(--surface2);}
+    .sg-cell.ocupado{cursor:default;}
+    .sg-turno{background:#00d4aa18;border:1px solid #00d4aa44;border-radius:5px;padding:4px 7px;font-size:11px;color:var(--accent);font-weight:500;height:100%;}
+    .sg-turno.secretaria{background:#0077ff18;border-color:#0077ff44;color:var(--accent2);}
+
+    /* FORM CARD */
+    .form-card{max-width:580px;background:var(--surface);border:1px solid var(--border);border-radius:15px;padding:28px;}
+    .form-section{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:20px 0 14px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+    .form-section:first-child{margin-top:0;}
+    .form-note{font-size:11px;color:var(--muted);margin-top:-8px;margin-bottom:14px;}
+
+    /* TOASTS */
+    #toasts{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;}
+    .toast{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:12px 16px;font-size:13px;animation:slideIn .2s ease;box-shadow:0 4px 16px #00000044;}
+    .toast.ok{border-color:var(--accent);}
+    .toast.err{border-color:var(--danger);}
+    @keyframes slideIn{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}
+    .empty{text-align:center;padding:50px 20px;color:var(--muted);}
+    .empty-icon{font-size:44px;margin-bottom:10px;}
+    .loading{text-align:center;padding:36px;color:var(--muted);font-style:italic;font-size:13px;}
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">ConsultIA</div>
+    <div class="login-sub">Dashboard de gestión de turnos</div>
+    <div class="error-msg" id="login-error"></div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="f-email" placeholder="secretaria@consultorio.com"/>
+    </div>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" id="f-pass" placeholder="••••••••"/>
+    </div>
+    <button class="btn btn-primary btn-full" id="btn-login">Ingresar</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <aside class="sidebar">
+    <div class="sidebar-logo">ConsultIA</div>
+    <div class="sidebar-clinica" id="sb-clinica">—</div>
+    <div class="nav-section">Gestión</div>
+    <button class="nav-item active" data-page="turnos">📅 Turnos</button>
+    <button class="nav-item" data-page="nuevo">➕ Nuevo turno</button>
+    <div class="sidebar-footer">
+      <div>
+        <div class="user-name" id="sb-nombre">—</div>
+        <div class="user-rol" id="sb-rol">—</div>
+      </div>
+      <div class="sidebar-actions">
+        <button class="btn-small" id="btn-tema">☀️ Claro</button>
+        <button class="btn-small logout" id="btn-logout">Salir</button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- PÁGINA: TURNOS -->
+    <div class="page active" id="page-turnos">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Agenda</div>
+          <div class="page-sub" id="page-sub">—</div>
+        </div>
+        <div class="toggle">
+          <button class="toggle-btn active" id="btn-dia">📋 Día</button>
+          <button class="toggle-btn" id="btn-semana">📆 Semana</button>
+        </div>
+      </div>
+
+      <div class="stats" id="stats-wrap">
+        <div class="stat">
+          <div class="stat-label">Turnos del día</div>
+          <div class="stat-value" id="st-total">—</div>
+          <div class="stat-sub">confirmados</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Por el agente</div>
+          <div class="stat-value" id="st-agente" style="color:var(--accent)">—</div>
+          <div class="stat-sub">WhatsApp / web</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Por secretaría</div>
+          <div class="stat-value" id="st-sec" style="color:var(--accent2)">—</div>
+          <div class="stat-sub">cargados manual</div>
+        </div>
+      </div>
+
+      <div class="fecha-nav">
+        <button id="btn-prev">‹</button>
+        <div class="fecha-label" id="fecha-label">—</div>
+        <button id="btn-next">›</button>
+        <button class="btn-hoy" id="btn-hoy">Hoy</button>
+      </div>
+
+      <div id="vista-dia">
+        <div class="slots" id="slots-container"><div class="loading">Cargando...</div></div>
+      </div>
+      <div id="vista-semana" style="display:none">
+        <div class="semana-grid" id="semana-grid"></div>
+      </div>
+    </div>
+
+    <!-- PÁGINA: NUEVO TURNO -->
+    <div class="page" id="page-nuevo">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Nuevo turno</div>
+          <div class="page-sub">Agregar turno manualmente</div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-section">📋 Datos del paciente</div>
+
+        <div class="form-group">
+          <label>Nombre completo <span class="req">*</span></label>
+          <input type="text" id="n-nombre" placeholder="Ej: María González"/>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>DNI <span class="req">*</span></label>
+            <input type="text" id="n-dni" placeholder="Ej: 30456789"/>
+          </div>
+          <div class="form-group">
+            <label>Teléfono</label>
+            <input type="text" id="n-tel" placeholder="Ej: 11 4567-8900"/>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Obra social / Cobertura <span class="req">*</span></label>
+            <!-- Se llena dinámicamente con /api/dashboard/config -->
+            <select id="n-obra">
+              <option value="">Cargando...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>N° de afiliado <span style="color:var(--muted);font-size:10px">(opcional)</span></label>
+            <input type="text" id="n-afiliado" placeholder="Solo primera consulta"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Motivo de consulta <span style="color:var(--muted);font-size:10px">(opcional)</span></label>
+          <textarea id="n-motivo" placeholder="Ej: Control anual, dolor de cabeza, etc."></textarea>
+        </div>
+
+        <div class="form-section">🗓 Horario del turno</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Fecha <span class="req">*</span></label>
+            <input type="date" id="n-fecha"/>
+          </div>
+          <div class="form-group">
+            <label>Horario <span class="req">*</span></label>
+            <!-- Se llena dinámicamente con /api/dashboard/config -->
+            <select id="n-hora">
+              <option value="">Cargando...</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-note">Los campos con <span class="req">*</span> son obligatorios.</div>
+
+        <button class="btn btn-primary btn-full" id="btn-guardar">Guardar turno</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div id="toasts"></div>
+
+<script>
+  const API  = '/api/dashboard'
+  const DIAS = ['Lun','Mar','Mié','Jue','Vie','Sáb']
+
+  let token    = localStorage.getItem('cia_token')
+  let usuario  = JSON.parse(localStorage.getItem('cia_user') || 'null')
+  let config   = JSON.parse(localStorage.getItem('cia_config') || 'null') // obras sociales y horarios
+  let vista    = 'dia'
+  let fecha    = new Date()
+
+  // ── TEMA ──────────────────────────────────────────────────────────────────────
+  function aplicarTema(t) {
+    document.body.setAttribute('data-theme', t)
+    localStorage.setItem('cia_tema', t)
+    document.getElementById('btn-tema').textContent = t === 'light' ? '🌙 Oscuro' : '☀️ Claro'
+  }
+  aplicarTema(localStorage.getItem('cia_tema') || 'dark')
+  document.getElementById('btn-tema').addEventListener('click', () => {
+    aplicarTema(document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark')
+  })
+
+  // ── UTILS ─────────────────────────────────────────────────────────────────────
+  const fmt        = d => d.toISOString().split('T')[0]
+  const fmtDisplay = d => d.toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})
+  const fmtHora    = h => h ? String(h).slice(0,5) : ''
+
+  function lunes(d) {
+    const x = new Date(d), dia = x.getDay(), diff = dia===0?-6:1-dia
+    x.setDate(x.getDate()+diff); return x
+  }
+  function sabado(l) { const s=new Date(l); s.setDate(l.getDate()+5); return s }
+
+  function toast(msg, tipo='ok') {
+    const el = document.createElement('div')
+    el.className = `toast ${tipo}`; el.textContent = msg
+    document.getElementById('toasts').appendChild(el)
+    setTimeout(() => el.remove(), 3200)
+  }
+
+  async function api(path, opts={}) {
+    const r = await fetch(API+path, {
+      ...opts,
+      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer '+token, ...opts.headers }
+    })
+    if (r.status===401||r.status===403) { logout(); throw new Error('Sesión expirada') }
+    return r
+  }
+
+  // ── CARGAR CONFIG DEL CLIENTE ─────────────────────────────────────────────────
+  // Llama a /api/dashboard/config y llena los selects de obras sociales y horarios
+  async function cargarConfig() {
+    try {
+      const r = await api('/config')
+      config = await r.json()
+      localStorage.setItem('cia_config', JSON.stringify(config))
+      llenarSelects()
+    } catch(e) {
+      if (e.message !== 'Sesión expirada') console.error('Error al cargar config:', e)
+    }
+  }
+
+  function llenarSelects() {
+    if (!config) return
+
+    // Select de obras sociales
+    const selectObra = document.getElementById('n-obra')
+    selectObra.innerHTML = '<option value="">Seleccioná cobertura...</option>'
+    config.obrasSociales.forEach(os => {
+      const opt = document.createElement('option')
+      opt.value = os; opt.textContent = os
+      selectObra.appendChild(opt)
+    })
+
+    // Select de horarios
+    const selectHora = document.getElementById('n-hora')
+    selectHora.innerHTML = '<option value="">Seleccioná horario...</option>'
+    config.horarios.forEach(h => {
+      const opt = document.createElement('option')
+      opt.value = h; opt.textContent = h
+      selectHora.appendChild(opt)
+    })
+  }
+
+  // ── AUTH ──────────────────────────────────────────────────────────────────────
+  document.getElementById('btn-login').addEventListener('click', async () => {
+    const email = document.getElementById('f-email').value.trim()
+    const pass  = document.getElementById('f-pass').value
+    const errEl = document.getElementById('login-error')
+    errEl.style.display = 'none'
+    if (!email||!pass) { errEl.textContent='Completá email y contraseña'; errEl.style.display='block'; return }
+
+    const btn = document.getElementById('btn-login')
+    btn.textContent='Ingresando...'; btn.disabled=true
+    try {
+      const r = await fetch(API+'/login', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({email,password:pass})
+      })
+      const d = await r.json()
+      if (!r.ok) { errEl.textContent=d.error||'Error al ingresar'; errEl.style.display='block'; return }
+      token = d.token; usuario = d.usuario
+      localStorage.setItem('cia_token', token)
+      localStorage.setItem('cia_user', JSON.stringify(usuario))
+      arrancarApp()
+    } catch { errEl.textContent='No se pudo conectar'; errEl.style.display='block' }
+    finally { btn.textContent='Ingresar'; btn.disabled=false }
+  })
+  document.getElementById('f-pass').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('btn-login').click() })
+  document.getElementById('btn-logout').addEventListener('click', logout)
+
+  function logout() {
+    localStorage.removeItem('cia_token')
+    localStorage.removeItem('cia_user')
+    localStorage.removeItem('cia_config')
+    token=null; usuario=null; config=null
+    document.getElementById('app').style.display='none'
+    document.getElementById('login-screen').style.display='flex'
+  }
+
+  // ── ARRANCAR APP ──────────────────────────────────────────────────────────────
+  function arrancarApp() {
+    document.getElementById('login-screen').style.display='none'
+    document.getElementById('app').style.display='block'
+    document.getElementById('sb-nombre').textContent = usuario.nombre
+    document.getElementById('sb-rol').textContent = {admin:'Administrador',medico:'Médico/a',secretaria:'Secretaría'}[usuario.rol]||usuario.rol
+
+    // Cargar config del cliente (obras sociales y horarios)
+    cargarConfig().then(() => {
+      document.getElementById('sb-clinica').textContent = config?.nombre || '—'
+    })
+
+    cargar()
+  }
+
+  // ── NAVEGACIÓN ────────────────────────────────────────────────────────────────
+  document.querySelectorAll('.nav-item[data-page]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'))
+      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
+      btn.classList.add('active')
+      document.getElementById('page-'+btn.dataset.page).classList.add('active')
+      if (btn.dataset.page==='turnos') cargar()
+      if (btn.dataset.page==='nuevo') {
+        document.getElementById('n-fecha').value = fmt(new Date())
+        // Si la config ya está cargada, llenar selects. Si no, cargarla.
+        if (config) llenarSelects()
+        else cargarConfig()
+      }
+    })
+  })
+
+  // ── TOGGLE VISTA ──────────────────────────────────────────────────────────────
+  document.getElementById('btn-dia').addEventListener('click', () => {
+    vista='dia'
+    document.getElementById('btn-dia').classList.add('active')
+    document.getElementById('btn-semana').classList.remove('active')
+    document.getElementById('vista-dia').style.display='block'
+    document.getElementById('vista-semana').style.display='none'
+    document.getElementById('stats-wrap').style.display='grid'
+    cargar()
+  })
+  document.getElementById('btn-semana').addEventListener('click', () => {
+    vista='semana'
+    document.getElementById('btn-semana').classList.add('active')
+    document.getElementById('btn-dia').classList.remove('active')
+    document.getElementById('vista-semana').style.display='block'
+    document.getElementById('vista-dia').style.display='none'
+    document.getElementById('stats-wrap').style.display='none'
+    cargar()
+  })
+
+  // ── NAV FECHAS ────────────────────────────────────────────────────────────────
+  document.getElementById('btn-prev').addEventListener('click', () => { fecha.setDate(fecha.getDate()+(vista==='dia'?-1:-7)); cargar() })
+  document.getElementById('btn-next').addEventListener('click', () => { fecha.setDate(fecha.getDate()+(vista==='dia'?1:7));  cargar() })
+  document.getElementById('btn-hoy').addEventListener('click',  () => { fecha=new Date(); cargar() })
+
+  // ── CARGAR TURNOS ─────────────────────────────────────────────────────────────
+  async function cargar() {
+    if (vista==='dia') {
+      document.getElementById('fecha-label').textContent = fmtDisplay(fecha)
+      document.getElementById('page-sub').textContent = fmt(fecha)===fmt(new Date())?'Hoy':fmtDisplay(fecha)
+      document.getElementById('slots-container').innerHTML = '<div class="loading">Cargando...</div>'
+      try {
+        const r = await api('/turnos?fecha='+fmt(fecha))
+        renderDia(await r.json())
+      } catch(e) { if(e.message!=='Sesión expirada') toast('Error al cargar turnos','err') }
+    } else {
+      const l = lunes(fecha), s = sabado(l)
+      document.getElementById('fecha-label').textContent =
+        `Semana del ${l.toLocaleDateString('es-AR',{day:'numeric',month:'short'})} al ${s.toLocaleDateString('es-AR',{day:'numeric',month:'short',year:'numeric'})}`
+      document.getElementById('semana-grid').innerHTML = '<div class="loading" style="grid-column:1/-1;padding:40px;text-align:center;color:var(--muted)">Cargando...</div>'
+      try {
+        const r = await api(`/turnos?semanaInicio=${fmt(l)}&semanaFin=${fmt(s)}`)
+        renderSemana(await r.json(), l)
+      } catch(e) { if(e.message!=='Sesión expirada') toast('Error al cargar semana','err') }
+    }
+  }
+
+  // ── RENDER DÍA ────────────────────────────────────────────────────────────────
+  function renderDia(turnos) {
+    document.getElementById('st-total').textContent  = turnos.length
+    document.getElementById('st-agente').textContent = turnos.filter(t=>t.origen==='agente').length
+    document.getElementById('st-sec').textContent    = turnos.filter(t=>t.origen==='secretaria').length
+
+    const c = document.getElementById('slots-container')
+
+    if (turnos.length === 0) {
+      c.innerHTML = '<div class="empty"><div class="empty-icon">📅</div><div>Sin turnos para este día</div></div>'
+      return
+    }
+
+    turnos.sort((a,b) => fmtHora(a.horario).localeCompare(fmtHora(b.horario)))
+    c.innerHTML = ''
+
+    turnos.forEach(t => {
+      const slot = document.createElement('div')
+      slot.className = 'slot'
+
+      const detalles = []
+      if (t.obra_social)       detalles.push(t.obra_social)
+      if (t.paciente_telefono) detalles.push('📞 '+t.paciente_telefono)
+      if (t.cargado_por)       detalles.push('Cargado por '+t.cargado_por)
+
+      const dniTag   = t.paciente_dni ? ` <span style="font-weight:400;color:var(--muted);font-size:12px">· DNI ${t.paciente_dni}</span>` : ''
+      const motivoTag = t.motivo ? `<div class="slot-det">💬 ${t.motivo}</div>` : ''
+
+      slot.innerHTML = `
+        <div class="slot-hora">${fmtHora(t.horario)}</div>
+        <div class="slot-info">
+          <div class="slot-paciente">${t.paciente_nombre}${dniTag}</div>
+          <div class="slot-det">${detalles.join(' · ')}</div>
+          ${motivoTag}
+        </div>
+        <span class="badge ${t.origen==='agente'?'badge-agente':'badge-secretaria'}">${t.origen==='agente'?'🤖 Agente':'👤 Secretaría'}</span>
+        <button class="btn btn-danger" onclick="confirmarCancel(${t.id},'${t.paciente_nombre.replace(/'/g,"\\'")}')">Cancelar</button>
+      `
+      c.appendChild(slot)
+    })
+  }
+
+  // ── RENDER SEMANA ─────────────────────────────────────────────────────────────
+  function renderSemana(turnos, lun) {
+    const hoy  = fmt(new Date())
+    const mapa = {}
+    const horasSet = new Set(config?.horarios || ['09:00','10:00','11:00','15:00','16:00'])
+
+    turnos.forEach(t => {
+      const f = t.fecha_turno ? String(t.fecha_turno).slice(0,10) : ''
+      const h = fmtHora(t.horario)
+      mapa[`${f}_${h}`] = t
+      if (h) horasSet.add(h)
+    })
+
+    const horas = Array.from(horasSet).sort()
+    const dias  = Array.from({length:6}, (_,i) => { const d=new Date(lun); d.setDate(lun.getDate()+i); return d })
+
+    let html = '<div class="sg-empty"></div>'
+    dias.forEach(d => {
+      const esHoy = fmt(d)===hoy
+      html += `<div class="sg-header${esHoy?' hoy':''}">
+        <div class="sg-dia-nom">${DIAS[d.getDay()===0?6:d.getDay()-1]}</div>
+        <div class="sg-dia-num">${d.getDate()}</div>
+      </div>`
+    })
+
+    horas.forEach(hora => {
+      html += `<div class="sg-hora">${hora}</div>`
+      dias.forEach(d => {
+        const t = mapa[`${fmt(d)}_${hora}`]
+        if (t) {
+          html += `<div class="sg-cell ocupado">
+            <div class="sg-turno${t.origen==='secretaria'?' secretaria':''}">
+              <div style="font-weight:600">${t.paciente_nombre.split(' ')[0]}</div>
+              <div style="opacity:.75;font-size:10px">${t.obra_social||'Part.'}</div>
+            </div>
+          </div>`
+        } else {
+          html += `<div class="sg-cell" onclick="irANuevoConFechaHora('${fmt(d)}','${hora}')"></div>`
+        }
+      })
+    })
+
+    document.getElementById('semana-grid').innerHTML = html
+  }
+
+  // ── CANCELAR ──────────────────────────────────────────────────────────────────
+  function confirmarCancel(id, nombre) {
+    if (!confirm(`¿Cancelar el turno de ${nombre}?`)) return
+    cancelarById(id)
+  }
+  async function cancelarById(id) {
+    try {
+      const r = await api('/turnos/'+id, {method:'DELETE'})
+      if (r.ok) { toast('Turno cancelado'); cargar() }
+      else { const d=await r.json(); toast(d.error||'Error','err') }
+    } catch(e) { if(e.message!=='Sesión expirada') toast('Error al cancelar','err') }
+  }
+
+  // ── HELPERS NAV NUEVO TURNO ───────────────────────────────────────────────────
+  function irANuevoConHora(hora) {
+    activarPagina('nuevo')
+    document.getElementById('n-fecha').value = fmt(fecha)
+    document.getElementById('n-hora').value  = hora
+  }
+  function irANuevoConFechaHora(f, hora) {
+    activarPagina('nuevo')
+    document.getElementById('n-fecha').value = f
+    document.getElementById('n-hora').value  = hora
+  }
+  function activarPagina(nombre) {
+    document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'))
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
+    document.querySelector(`[data-page="${nombre}"]`).classList.add('active')
+    document.getElementById(`page-${nombre}`).classList.add('active')
+    if (nombre==='nuevo' && config) llenarSelects()
+  }
+
+  // ── GUARDAR TURNO ─────────────────────────────────────────────────────────────
+  document.getElementById('btn-guardar').addEventListener('click', async () => {
+    const nombre  = document.getElementById('n-nombre').value.trim()
+    const dni     = document.getElementById('n-dni').value.trim()
+    const tel     = document.getElementById('n-tel').value.trim()
+    const obra    = document.getElementById('n-obra').value
+    const afil    = document.getElementById('n-afiliado').value.trim()
+    const motivo  = document.getElementById('n-motivo').value.trim()
+    const f       = document.getElementById('n-fecha').value
+    const hora    = document.getElementById('n-hora').value
+
+    if (!nombre || !dni || !obra || !f || !hora) {
+      toast('Completá los campos obligatorios: nombre, DNI, cobertura, fecha y horario', 'err')
+      return
+    }
+
+    const btn = document.getElementById('btn-guardar')
+    btn.textContent='Guardando...'; btn.disabled=true
+
+    try {
+      const r = await api('/turnos', {
+        method:'POST',
+        body: JSON.stringify({ nombre, dni, telefono:tel, obraSocial:obra, afiliado:afil, motivo, fecha:f, horario:hora })
+      })
+      const d = await r.json()
+      if (r.ok) {
+        toast(`✅ Turno de ${nombre} guardado`)
+        ;['n-nombre','n-dni','n-tel','n-afiliado','n-motivo'].forEach(id => document.getElementById(id).value='')
+        document.getElementById('n-obra').value = ''
+        document.getElementById('n-hora').value = ''
+        fecha = new Date(f+'T12:00:00')
+        activarPagina('turnos')
+        cargar()
+      } else {
+        toast(d.error||'Error al guardar','err')
+      }
+    } catch(e) { if(e.message!=='Sesión expirada') toast('Error de conexión','err') }
+    finally { btn.textContent='Guardar turno'; btn.disabled=false }
+  })
+
+  // ── ARRANQUE ──────────────────────────────────────────────────────────────────
+  if (token && usuario) arrancarApp()
+</script>
+</body>
+</html>

@@ -5,12 +5,16 @@
   "direccion": "Av. Corrientes 1234, CABA",
   "telefono": "+54 11 4567-8900",
   "horarios": {
-    "lunes_viernes": "8:00 a 20:00",
+    "lunes_viernes": "9:00 a 18:00",
     "sabados": "9:00 a 13:00",
     "domingos": "cerrado"
   },
+  "horarios_disponibles": [
+    "09:00", "10:00", "11:00", "12:00",
+    "14:00", "15:00", "16:00", "17:00"
+  ],
   "obras_sociales": ["OSDE", "Swiss Medical", "Galeno", "IOMA", "PAMI", "Medicus"],
-  "valor_consulta_particular": "$15.000",
+  "valor_consulta_particular": "$20.000",
   "duracion_turno": "30 minutos",
   "formas_de_pago": ["Efectivo", "Transferencia bancaria", "Mercado Pago"]
 }

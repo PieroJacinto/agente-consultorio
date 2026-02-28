@@ -5,6 +5,7 @@ const { procesarMensaje } = require('./src/agent')
 const { getCliente } = require('./src/clientes')
 const { inicializarDB, getTurnosPorCliente } = require('./src/db')
 const { inicializarSheet } = require('./src/sheets')
+const dashboardRouter = require('./src/dashboard')   // ← NUEVO
 
 const app = express()
 
@@ -75,6 +76,12 @@ app.post('/whatsapp', async (req, res) => {
   }
 })
 
+// ─── DASHBOARD ────────────────────────────────────────────────────────────────
+app.use('/api/dashboard', dashboardRouter)                                // ← NUEVO
+app.get('/dashboard', (req, res) => {                                     // ← NUEVO
+  res.sendFile('dashboard.html', { root: 'public' })                     // ← NUEVO
+})                                                                        // ← NUEVO
+
 // Endpoint para ver turnos de un cliente (temporal, para testing)
 app.get('/turnos/:clienteId', async (req, res) => {
   const { clienteId } = req.params
@@ -89,4 +96,5 @@ app.get('/health', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`)
+  console.log(`📊 Dashboard: http://localhost:${PORT}/dashboard`)
 })
