@@ -7,14 +7,14 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:#0a0f1a; --surface:#111827; --surface2:#1a2335; --border:#1e2d45;
-      --accent:#00d4aa; --accent2:#0077ff; --danger:#ff4757;
-      --text:#e8eef7; --muted:#6b7fa3; --cs:dark;
+      --bg:#0a0f1a;--surface:#111827;--surface2:#1a2335;--border:#1e2d45;
+      --accent:#00d4aa;--accent2:#0077ff;--danger:#ff4757;
+      --text:#e8eef7;--muted:#6b7fa3;--cs:dark;
     }
     [data-theme="light"] {
-      --bg:#f0f4f8; --surface:#ffffff; --surface2:#e4eaf3; --border:#c8d5e8;
-      --accent:#009e7f; --accent2:#0055cc; --danger:#d63040;
-      --text:#111827; --muted:#556a8a; --cs:light;
+      --bg:#f0f4f8;--surface:#ffffff;--surface2:#e4eaf3;--border:#c8d5e8;
+      --accent:#009e7f;--accent2:#0055cc;--danger:#d63040;
+      --text:#111827;--muted:#556a8a;--cs:light;
     }
     *{margin:0;padding:0;box-sizing:border-box;}
     body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .2s,color .2s;}
@@ -22,7 +22,7 @@
     /* LOGIN */
     #login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 30% 50%,#0a2040,#0a0f1a);}
     [data-theme="light"] #login-screen{background:radial-gradient(ellipse at 30% 50%,#c8e0f8,#f0f4f8);}
-    .login-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px;width:100%;max-width:400px;box-shadow:0 0 80px #00000022;}
+    .login-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px;width:100%;max-width:400px;}
     .login-logo{font-family:'DM Serif Display',serif;font-size:30px;color:var(--accent);margin-bottom:4px;}
     .login-sub{color:var(--muted);font-size:13px;margin-bottom:32px;}
     .error-msg{background:#ff475720;border:1px solid #ff475740;color:var(--danger);border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:14px;display:none;}
@@ -39,7 +39,7 @@
     .form-group select option{background:var(--surface);color:var(--text);}
     .form-group textarea{resize:vertical;min-height:68px;}
     .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-    .req{color:var(--accent);margin-left:2px;}
+    .req{color:var(--accent);}
 
     /* BUTTONS */
     .btn{padding:12px 18px;border-radius:10px;border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;}
@@ -50,23 +50,26 @@
     .btn-danger:hover{background:var(--danger);color:#fff;}
     .btn-outline{background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:8px 16px;font-size:13px;border-radius:8px;}
     .btn-outline:hover{border-color:var(--accent);color:var(--accent);}
+    .btn-ghost{background:none;border:1px solid var(--border);color:var(--muted);padding:5px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;}
+    .btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+    .btn-ghost.danger:hover{border-color:var(--danger);color:var(--danger);}
 
     /* SIDEBAR */
     #app{display:none;min-height:100vh;}
     .sidebar{position:fixed;top:0;left:0;width:230px;height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 16px;display:flex;flex-direction:column;z-index:100;transition:background .2s;}
     .sidebar-logo{font-family:'DM Serif Display',serif;font-size:22px;color:var(--accent);}
-    .sidebar-clinica{font-size:11px;color:var(--muted);margin-bottom:28px;margin-top:2px;}
-    .nav-section{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding-left:8px;margin-bottom:6px;}
+    .sidebar-clinica{font-size:12px;font-weight:600;color:var(--text);margin-top:2px;}
+    .sidebar-info{margin-bottom:20px;margin-top:4px;}
+    .sb-info-item{font-size:11px;color:var(--muted);line-height:1.6;}
+    .nav-section{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding-left:8px;margin-bottom:6px;margin-top:10px;}
     .nav-item{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:8px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left;margin-bottom:2px;}
     .nav-item:hover{background:var(--surface2);color:var(--text);}
     .nav-item.active{background:#00d4aa18;color:var(--accent);}
+    .nav-item.admin-only{display:none;}
     .sidebar-footer{margin-top:auto;border-top:1px solid var(--border);padding-top:14px;display:flex;flex-direction:column;gap:8px;}
     .user-name{font-size:13px;font-weight:600;}
     .user-rol{font-size:11px;color:var(--muted);}
-    .sidebar-actions{display:flex;gap:6px;margin-top:2px;}
-    .btn-small{background:none;border:1px solid var(--border);color:var(--muted);padding:5px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;}
-    .btn-small:hover{border-color:var(--accent);color:var(--accent);}
-    .btn-small.logout:hover{border-color:var(--danger);color:var(--danger);}
+    .sidebar-actions{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;}
 
     /* MAIN */
     .main{margin-left:230px;padding:28px 32px;}
@@ -75,7 +78,7 @@
     .page-title{font-family:'DM Serif Display',serif;font-size:26px;}
     .page-sub{font-size:12px;color:var(--muted);margin-top:2px;}
 
-    /* TOGGLE */
+    /* TOGGLE VISTA */
     .toggle{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:3px;gap:3px;}
     .toggle-btn{padding:7px 16px;border-radius:7px;border:none;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;background:transparent;color:var(--muted);transition:all .15s;}
     .toggle-btn.active{background:var(--accent);color:#0a0f1a;}
@@ -97,7 +100,8 @@
 
     /* SLOTS */
     .slots{display:flex;flex-direction:column;gap:8px;}
-    .slot{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:14px 18px;}
+    .slot{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:14px 18px;cursor:pointer;transition:border-color .15s;}
+    .slot:hover{border-color:var(--accent);}
     .slot-hora{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--accent);min-width:52px;font-weight:500;}
     .slot-info{flex:1;}
     .slot-paciente{font-size:14px;font-weight:600;}
@@ -105,6 +109,7 @@
     .badge{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:3px 8px;border-radius:20px;white-space:nowrap;}
     .badge-agente{background:#00d4aa18;border:1px solid #00d4aa44;color:var(--accent);}
     .badge-secretaria{background:#0077ff18;border:1px solid #0077ff44;color:var(--accent2);}
+    .badge-cancelado{background:#ff475718;border:1px solid #ff475740;color:var(--danger);}
 
     /* SEMANA */
     .semana-grid{display:grid;grid-template-columns:52px repeat(6,1fr);gap:1px;background:var(--border);border-radius:12px;overflow:hidden;border:1px solid var(--border);}
@@ -114,11 +119,32 @@
     .sg-dia-num{font-family:'DM Serif Display',serif;font-size:20px;margin-top:1px;}
     .sg-header.hoy .sg-dia-num{color:var(--accent);}
     .sg-hora{background:var(--surface);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);padding:6px 0;}
-    .sg-cell{background:var(--surface);padding:5px;min-height:54px;cursor:pointer;transition:background .1s;}
+    .sg-cell{background:var(--surface);padding:5px;min-height:72px;cursor:pointer;transition:background .1s;}
     .sg-cell:hover{background:var(--surface2);}
-    .sg-cell.ocupado{cursor:default;}
+    .sg-cell.ocupado{cursor:pointer;}
     .sg-turno{background:#00d4aa18;border:1px solid #00d4aa44;border-radius:5px;padding:4px 7px;font-size:11px;color:var(--accent);font-weight:500;height:100%;}
     .sg-turno.secretaria{background:#0077ff18;border-color:#0077ff44;color:var(--accent2);}
+
+    /* HISTORIAL */
+    .tabla{width:100%;border-collapse:collapse;}
+    .tabla th{text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:10px 14px;border-bottom:1px solid var(--border);}
+    .tabla td{padding:12px 14px;font-size:13px;border-bottom:1px solid var(--border);}
+    .tabla tr:last-child td{border-bottom:none;}
+    .tabla tr:hover td{background:var(--surface2);}
+    .tabla-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+    .historial-filtros{display:flex;gap:10px;margin-bottom:18px;align-items:center;}
+    .historial-filtros input{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;color-scheme:var(--cs);}
+    .historial-filtros input:focus{border-color:var(--accent);}
+
+    /* USUARIOS */
+    .usuarios-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+    .rol-badge{font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;text-transform:uppercase;}
+    .rol-admin{background:#00d4aa18;border:1px solid #00d4aa44;color:var(--accent);}
+    .rol-secretaria{background:#0077ff18;border:1px solid #0077ff44;color:var(--accent2);}
+    .rol-medico{background:#a855f718;border:1px solid #a855f744;color:#a855f7;}
+    .estado-badge{font-size:11px;padding:2px 8px;border-radius:20px;}
+    .estado-activo{background:#00d4aa18;color:var(--accent);}
+    .estado-inactivo{background:#ff475718;color:var(--danger);}
 
     /* FORM CARD */
     .form-card{max-width:580px;background:var(--surface);border:1px solid var(--border);border-radius:15px;padding:28px;}
@@ -126,33 +152,30 @@
     .form-section:first-child{margin-top:0;}
     .form-note{font-size:11px;color:var(--muted);margin-top:-8px;margin-bottom:14px;}
 
-    /* TOASTS */
-    #toasts{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;}
-    .toast{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:12px 16px;font-size:13px;animation:slideIn .2s ease;box-shadow:0 4px 16px #00000044;}
-    .toast.ok{border-color:var(--accent);}
-    .toast.err{border-color:var(--danger);}
-    @keyframes slideIn{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}
-    .empty{text-align:center;padding:50px 20px;color:var(--muted);}
-    .empty-icon{font-size:44px;margin-bottom:10px;}
-    .loading{text-align:center;padding:36px;color:var(--muted);font-style:italic;font-size:13px;}
-
-    /* MODAL DETALLE */
+    /* MODAL */
     .modal-overlay{display:none;position:fixed;inset:0;background:#00000088;backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center;}
     .modal-overlay.open{display:flex;}
-    .modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;width:100%;max-width:480px;box-shadow:0 20px 60px #00000066;}
+    .modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;width:100%;max-width:500px;box-shadow:0 20px 60px #00000066;max-height:90vh;overflow-y:auto;}
     .modal-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;}
     .modal-title{font-family:'DM Serif Display',serif;font-size:22px;}
-    .modal-hora{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);margin-top:3px;}
-    .btn-modal-close{background:none;border:1px solid var(--border);color:var(--muted);width:30px;height:30px;border-radius:7px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;}
+    .modal-hora{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);margin-top:4px;}
+    .btn-modal-close{background:none;border:1px solid var(--border);color:var(--muted);width:30px;height:30px;border-radius:7px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
     .btn-modal-close:hover{border-color:var(--danger);color:var(--danger);}
     .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px;}
     .modal-field label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:3px;display:block;}
     .modal-field .val{font-size:14px;font-weight:500;}
     .modal-field.full{grid-column:1/-1;}
     .modal-footer{display:flex;gap:8px;justify-content:flex-end;padding-top:18px;border-top:1px solid var(--border);}
-    /* Slot clickeable */
-    .slot{cursor:pointer;transition:border-color .15s;}
-    .slot:hover{border-color:var(--accent);}
+
+    /* MISC */
+    .loading{text-align:center;padding:36px;color:var(--muted);font-style:italic;font-size:13px;}
+    .empty{text-align:center;padding:50px 20px;color:var(--muted);}
+    .empty-icon{font-size:44px;margin-bottom:10px;}
+    #toasts{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;}
+    .toast{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:12px 16px;font-size:13px;animation:slideIn .2s ease;box-shadow:0 4px 16px #00000044;}
+    .toast.ok{border-color:var(--accent);}
+    .toast.err{border-color:var(--danger);}
+    @keyframes slideIn{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}
   </style>
 </head>
 <body>
@@ -163,14 +186,8 @@
     <div class="login-logo">ConsultIA</div>
     <div class="login-sub">Dashboard de gestión de turnos</div>
     <div class="error-msg" id="login-error"></div>
-    <div class="form-group">
-      <label>Email</label>
-      <input type="email" id="f-email" placeholder="secretaria@consultorio.com"/>
-    </div>
-    <div class="form-group">
-      <label>Contraseña</label>
-      <input type="password" id="f-pass" placeholder="••••••••"/>
-    </div>
+    <div class="form-group"><label>Email</label><input type="email" id="f-email" placeholder="secretaria@consultorio.com"/></div>
+    <div class="form-group"><label>Contraseña</label><input type="password" id="f-pass" placeholder="••••••••"/></div>
     <button class="btn btn-primary btn-full" id="btn-login">Ingresar</button>
   </div>
 </div>
@@ -180,17 +197,22 @@
   <aside class="sidebar">
     <div class="sidebar-logo">ConsultIA</div>
     <div class="sidebar-clinica" id="sb-clinica">—</div>
-    <div class="nav-section">Gestión</div>
+    <div class="sidebar-info" id="sb-info" style="display:none">
+      <div class="sb-info-item" id="sb-especialidad"></div>
+      <div class="sb-info-item" id="sb-duracion"></div>
+    </div>
+    <div class="nav-section">Agenda</div>
     <button class="nav-item active" data-page="turnos">📅 Turnos</button>
     <button class="nav-item" data-page="nuevo">➕ Nuevo turno</button>
+    <button class="nav-item" data-page="historial">🗂 Historial</button>
+    <div class="nav-section">Administración</div>
+    <button class="nav-item admin-only" data-page="usuarios" id="nav-usuarios">👥 Usuarios</button>
     <div class="sidebar-footer">
-      <div>
-        <div class="user-name" id="sb-nombre">—</div>
-        <div class="user-rol" id="sb-rol">—</div>
-      </div>
+      <div><div class="user-name" id="sb-nombre">—</div><div class="user-rol" id="sb-rol">—</div></div>
       <div class="sidebar-actions">
-        <button class="btn-small" id="btn-tema">☀️ Claro</button>
-        <button class="btn-small logout" id="btn-logout">Salir</button>
+        <button class="btn-ghost" id="btn-tema">☀️ Claro</button>
+        <button class="btn-ghost" id="btn-pass">🔑 Clave</button>
+        <button class="btn-ghost danger" id="btn-logout">Salir</button>
       </div>
     </div>
   </aside>
@@ -200,164 +222,168 @@
     <!-- PÁGINA: TURNOS -->
     <div class="page active" id="page-turnos">
       <div class="page-header">
-        <div>
-          <div class="page-title">Agenda</div>
-          <div class="page-sub" id="page-sub">—</div>
-        </div>
+        <div><div class="page-title">Agenda</div><div class="page-sub" id="page-sub">—</div></div>
         <div class="toggle">
           <button class="toggle-btn active" id="btn-dia">📋 Día</button>
           <button class="toggle-btn" id="btn-semana">📆 Semana</button>
         </div>
       </div>
-
       <div class="stats" id="stats-wrap">
-        <div class="stat">
-          <div class="stat-label">Turnos del día</div>
-          <div class="stat-value" id="st-total">—</div>
-          <div class="stat-sub">confirmados</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Por el agente</div>
-          <div class="stat-value" id="st-agente" style="color:var(--accent)">—</div>
-          <div class="stat-sub">WhatsApp / web</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Por secretaría</div>
-          <div class="stat-value" id="st-sec" style="color:var(--accent2)">—</div>
-          <div class="stat-sub">cargados manual</div>
-        </div>
+        <div class="stat"><div class="stat-label">Turnos del día</div><div class="stat-value" id="st-total">—</div><div class="stat-sub">confirmados</div></div>
+        <div class="stat"><div class="stat-label">Por el agente</div><div class="stat-value" id="st-agente" style="color:var(--accent)">—</div><div class="stat-sub">WhatsApp / web</div></div>
+        <div class="stat"><div class="stat-label">Por secretaría</div><div class="stat-value" id="st-sec" style="color:var(--accent2)">—</div><div class="stat-sub">cargados manual</div></div>
       </div>
-
       <div class="fecha-nav">
         <button id="btn-prev">‹</button>
         <div class="fecha-label" id="fecha-label">—</div>
         <button id="btn-next">›</button>
         <button class="btn-hoy" id="btn-hoy">Hoy</button>
       </div>
-
-      <div id="vista-dia">
-        <div class="slots" id="slots-container"><div class="loading">Cargando...</div></div>
-      </div>
-      <div id="vista-semana" style="display:none">
-        <div class="semana-grid" id="semana-grid"></div>
-      </div>
+      <div id="vista-dia"><div class="slots" id="slots-container"><div class="loading">Cargando...</div></div></div>
+      <div id="vista-semana" style="display:none"><div class="semana-grid" id="semana-grid"></div></div>
     </div>
 
     <!-- PÁGINA: NUEVO TURNO -->
     <div class="page" id="page-nuevo">
-      <div class="page-header">
-        <div>
-          <div class="page-title">Nuevo turno</div>
-          <div class="page-sub">Agregar turno manualmente</div>
-        </div>
-      </div>
-
+      <div class="page-header"><div><div class="page-title">Nuevo turno</div><div class="page-sub">Agregar turno manualmente</div></div></div>
       <div class="form-card">
         <div class="form-section">📋 Datos del paciente</div>
-
-        <div class="form-group">
-          <label>Nombre completo <span class="req">*</span></label>
-          <input type="text" id="n-nombre" placeholder="Ej: María González"/>
-        </div>
-
+        <div class="form-group"><label>Nombre completo <span class="req">*</span></label><input type="text" id="n-nombre" placeholder="Ej: María González"/></div>
         <div class="form-row">
-          <div class="form-group">
-            <label>DNI <span class="req">*</span></label>
-            <input type="text" id="n-dni" placeholder="Ej: 30456789"/>
-          </div>
-          <div class="form-group">
-            <label>Teléfono</label>
-            <input type="text" id="n-tel" placeholder="Ej: 11 4567-8900"/>
-          </div>
+          <div class="form-group"><label>DNI <span class="req">*</span></label><input type="text" id="n-dni" placeholder="Ej: 30456789"/></div>
+          <div class="form-group"><label>Teléfono</label><input type="text" id="n-tel" placeholder="Ej: 11 4567-8900"/></div>
         </div>
-
         <div class="form-row">
-          <div class="form-group">
-            <label>Obra social / Cobertura <span class="req">*</span></label>
-            <!-- Se llena dinámicamente con /api/dashboard/config -->
-            <select id="n-obra">
-              <option value="">Cargando...</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>N° de afiliado <span style="color:var(--muted);font-size:10px">(opcional)</span></label>
-            <input type="text" id="n-afiliado" placeholder="Solo primera consulta"/>
-          </div>
+          <div class="form-group"><label>Obra social / Cobertura <span class="req">*</span></label><select id="n-obra"><option value="">Cargando...</option></select></div>
+          <div class="form-group"><label>N° de afiliado</label><input type="text" id="n-afiliado" placeholder="Solo primera consulta"/></div>
         </div>
-
-        <div class="form-group">
-          <label>Motivo de consulta <span style="color:var(--muted);font-size:10px">(opcional)</span></label>
-          <textarea id="n-motivo" placeholder="Ej: Control anual, dolor de cabeza, etc."></textarea>
-        </div>
-
+        <div class="form-group"><label>Motivo de consulta</label><textarea id="n-motivo" placeholder="Ej: Control anual, dolor de cabeza..."></textarea></div>
         <div class="form-section">🗓 Horario del turno</div>
-
         <div class="form-row">
-          <div class="form-group">
-            <label>Fecha <span class="req">*</span></label>
-            <input type="date" id="n-fecha"/>
-          </div>
-          <div class="form-group">
-            <label>Horario <span class="req">*</span></label>
-            <!-- Se llena dinámicamente con /api/dashboard/config -->
-            <select id="n-hora">
-              <option value="">Cargando...</option>
-            </select>
-          </div>
+          <div class="form-group"><label>Fecha <span class="req">*</span></label><input type="date" id="n-fecha"/></div>
+          <div class="form-group"><label>Horario <span class="req">*</span></label><select id="n-hora"><option value="">Cargando...</option></select></div>
         </div>
-
         <div class="form-note">Los campos con <span class="req">*</span> son obligatorios.</div>
-
         <button class="btn btn-primary btn-full" id="btn-guardar">Guardar turno</button>
+      </div>
+    </div>
+
+    <!-- PÁGINA: HISTORIAL -->
+    <div class="page" id="page-historial">
+      <div class="page-header"><div><div class="page-title">Historial</div><div class="page-sub">Turnos pasados y cancelados</div></div></div>
+      <div class="historial-filtros">
+        <input type="text" id="hist-buscar" placeholder="🔍 Buscar por nombre o DNI..." style="min-width:260px"/>
+        <input type="date" id="hist-desde" title="Desde"/>
+        <input type="date" id="hist-hasta" title="Hasta"/>
+        <button class="btn-ghost" id="hist-limpiar">Limpiar filtros</button>
+      </div>
+      <div class="tabla-wrap">
+        <table class="tabla" id="hist-tabla">
+          <thead><tr>
+            <th>Fecha</th><th>Hora</th><th>Paciente</th><th>DNI</th><th>Cobertura</th><th>Estado</th><th>Origen</th>
+          </tr></thead>
+          <tbody id="hist-tbody"><tr><td colspan="7" class="loading">Cargando...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PÁGINA: USUARIOS -->
+    <div class="page" id="page-usuarios">
+      <div class="page-header">
+        <div><div class="page-title">Usuarios</div><div class="page-sub">Gestión de accesos al dashboard</div></div>
+        <button class="btn btn-primary" id="btn-nuevo-usuario">+ Nuevo usuario</button>
+      </div>
+      <div class="tabla-wrap">
+        <table class="tabla">
+          <thead><tr><th>Nombre</th><th>Email</th><th>Rol</th><th>Estado</th><th>Acciones</th></tr></thead>
+          <tbody id="usuarios-tbody"><tr><td colspan="5" class="loading">Cargando...</td></tr></tbody>
+        </table>
       </div>
     </div>
 
   </main>
 </div>
 
-<!-- MODAL DETALLE TURNO -->
+<!-- MODAL: DETALLE TURNO -->
 <div class="modal-overlay" id="modal-detalle">
   <div class="modal">
     <div class="modal-header">
-      <div>
-        <div class="modal-title" id="md-nombre">—</div>
-        <div class="modal-hora" id="md-hora">—</div>
-      </div>
-      <button class="btn-modal-close" id="btn-modal-close">✕</button>
+      <div><div class="modal-title" id="md-nombre">—</div><div class="modal-hora" id="md-hora">—</div></div>
+      <button class="btn-modal-close" id="btn-md-close">✕</button>
     </div>
-    <div class="modal-grid">
-      <div class="modal-field">
-        <label>DNI</label>
-        <div class="val" id="md-dni">—</div>
+    <div id="md-vista">
+      <div class="modal-grid">
+        <div class="modal-field"><label>DNI</label><div class="val" id="md-dni">—</div></div>
+        <div class="modal-field"><label>Teléfono</label><div class="val" id="md-tel">—</div></div>
+        <div class="modal-field"><label>Cobertura</label><div class="val" id="md-obra">—</div></div>
+        <div class="modal-field"><label>N° afiliado</label><div class="val" id="md-afiliado">—</div></div>
+        <div class="modal-field full"><label>Motivo</label><div class="val" id="md-motivo">—</div></div>
+        <div class="modal-field"><label>Origen</label><div class="val" id="md-origen">—</div></div>
+        <div class="modal-field"><label>Cargado por</label><div class="val" id="md-cargado">—</div></div>
       </div>
-      <div class="modal-field">
-        <label>Teléfono</label>
-        <div class="val" id="md-tel">—</div>
-      </div>
-      <div class="modal-field">
-        <label>Obra social / Cobertura</label>
-        <div class="val" id="md-obra">—</div>
-      </div>
-      <div class="modal-field">
-        <label>N° de afiliado</label>
-        <div class="val" id="md-afiliado">—</div>
-      </div>
-      <div class="modal-field full">
-        <label>Motivo de consulta</label>
-        <div class="val" id="md-motivo">—</div>
-      </div>
-      <div class="modal-field">
-        <label>Origen</label>
-        <div class="val" id="md-origen">—</div>
-      </div>
-      <div class="modal-field">
-        <label>Cargado por</label>
-        <div class="val" id="md-cargado">—</div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="btn-md-editar">✏️ Editar</button>
+        <button class="btn btn-danger" id="btn-md-cancelar">Cancelar turno</button>
+        <button class="btn btn-outline" id="btn-md-cerrar">Cerrar</button>
       </div>
     </div>
+    <!-- Formulario de edición (oculto por defecto) -->
+    <div id="md-edicion" style="display:none">
+      <div class="form-row" style="margin-bottom:12px">
+        <div class="form-group"><label>Fecha</label><input type="date" id="ed-fecha"/></div>
+        <div class="form-group"><label>Horario</label><select id="ed-hora"></select></div>
+      </div>
+      <div class="form-group"><label>Cobertura</label><select id="ed-obra"></select></div>
+      <div class="form-group"><label>Teléfono</label><input type="text" id="ed-tel"/></div>
+      <div class="form-group"><label>Motivo</label><textarea id="ed-motivo"></textarea></div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="btn-ed-cancelar">Cancelar</button>
+        <button class="btn btn-primary" id="btn-ed-guardar">Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: NUEVO USUARIO -->
+<div class="modal-overlay" id="modal-usuario">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Nuevo usuario</div>
+      <button class="btn-modal-close" id="btn-mu-close">✕</button>
+    </div>
+    <div class="form-group"><label>Nombre completo</label><input type="text" id="mu-nombre" placeholder="Ej: Laura Gómez"/></div>
+    <div class="form-group"><label>Email</label><input type="email" id="mu-email" placeholder="laura@consultorio.com"/></div>
+    <div class="form-group"><label>Contraseña inicial</label><input type="password" id="mu-pass" placeholder="Mínimo 8 caracteres"/></div>
+    <div class="form-group">
+      <label>Rol</label>
+      <select id="mu-rol">
+        <option value="secretaria">Secretaría</option>
+        <option value="medico">Médico/a</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
+    <div class="error-msg" id="mu-error"></div>
     <div class="modal-footer">
-      <button class="btn btn-danger" id="btn-modal-cancelar">Cancelar turno</button>
-      <button class="btn btn-outline" id="btn-modal-cerrar">Cerrar</button>
+      <button class="btn btn-outline" id="btn-mu-cancelar">Cancelar</button>
+      <button class="btn btn-primary" id="btn-mu-guardar">Crear usuario</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: CAMBIAR CONTRASEÑA -->
+<div class="modal-overlay" id="modal-pass">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Cambiar contraseña</div>
+      <button class="btn-modal-close" id="btn-mp-close">✕</button>
+    </div>
+    <div class="form-group"><label>Contraseña actual</label><input type="password" id="mp-actual" placeholder="Tu contraseña actual"/></div>
+    <div class="form-group"><label>Nueva contraseña</label><input type="password" id="mp-nueva" placeholder="Mínimo 8 caracteres"/></div>
+    <div class="form-group"><label>Confirmar nueva</label><input type="password" id="mp-confirmar" placeholder="Repetí la nueva contraseña"/></div>
+    <div class="error-msg" id="mp-error"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" id="btn-mp-cancelar">Cancelar</button>
+      <button class="btn btn-primary" id="btn-mp-guardar">Cambiar contraseña</button>
     </div>
   </div>
 </div>
@@ -369,10 +395,12 @@
   const DIAS = ['Lun','Mar','Mié','Jue','Vie','Sáb']
 
   let token    = localStorage.getItem('cia_token')
-  let usuario  = JSON.parse(localStorage.getItem('cia_user') || 'null')
-  let config   = JSON.parse(localStorage.getItem('cia_config') || 'null') // obras sociales y horarios
+  let usuario  = JSON.parse(localStorage.getItem('cia_user')   || 'null')
+  let config   = JSON.parse(localStorage.getItem('cia_config') || 'null')
   let vista    = 'dia'
   let fecha    = new Date()
+  let turnoActivo = null
+  let historialData = []
 
   // ── TEMA ──────────────────────────────────────────────────────────────────────
   function aplicarTema(t) {
@@ -381,69 +409,57 @@
     document.getElementById('btn-tema').textContent = t === 'light' ? '🌙 Oscuro' : '☀️ Claro'
   }
   aplicarTema(localStorage.getItem('cia_tema') || 'dark')
-  document.getElementById('btn-tema').addEventListener('click', () => {
-    aplicarTema(document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark')
-  })
+  document.getElementById('btn-tema').addEventListener('click', () =>
+    aplicarTema(document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'))
 
   // ── UTILS ─────────────────────────────────────────────────────────────────────
   const fmt        = d => d.toISOString().split('T')[0]
   const fmtDisplay = d => d.toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})
   const fmtHora    = h => h ? String(h).slice(0,5) : ''
-
-  function lunes(d) {
-    const x = new Date(d), dia = x.getDay(), diff = dia===0?-6:1-dia
-    x.setDate(x.getDate()+diff); return x
-  }
+  function lunes(d) { const x=new Date(d),dia=x.getDay(),diff=dia===0?-6:1-dia; x.setDate(x.getDate()+diff); return x }
   function sabado(l) { const s=new Date(l); s.setDate(l.getDate()+5); return s }
-
   function toast(msg, tipo='ok') {
     const el = document.createElement('div')
-    el.className = `toast ${tipo}`; el.textContent = msg
+    el.className=`toast ${tipo}`; el.textContent=msg
     document.getElementById('toasts').appendChild(el)
-    setTimeout(() => el.remove(), 3200)
+    setTimeout(()=>el.remove(), 3200)
   }
-
   async function api(path, opts={}) {
     const r = await fetch(API+path, {
-      ...opts,
-      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer '+token, ...opts.headers }
+      ...opts, headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,...opts.headers}
     })
     if (r.status===401||r.status===403) { logout(); throw new Error('Sesión expirada') }
     return r
   }
 
-  // ── CARGAR CONFIG DEL CLIENTE ─────────────────────────────────────────────────
-  // Llama a /api/dashboard/config y llena los selects de obras sociales y horarios
+  // ── CONFIG ────────────────────────────────────────────────────────────────────
   async function cargarConfig() {
     try {
       const r = await api('/config')
       config = await r.json()
       localStorage.setItem('cia_config', JSON.stringify(config))
       llenarSelects()
-    } catch(e) {
-      if (e.message !== 'Sesión expirada') console.error('Error al cargar config:', e)
-    }
+      document.getElementById('sb-clinica').textContent = config.nombre || '—'
+      document.getElementById('sb-especialidad').textContent = config.especialidad || ''
+      document.getElementById('sb-duracion').textContent = config.duracionMinutos ? `⏱ Turnos de ${config.duracionMinutos} min` : ''
+      document.getElementById('sb-info').style.display = 'flex'
+    } catch(e) { if(e.message!=='Sesión expirada') console.error('Error config:',e) }
   }
-
   function llenarSelects() {
     if (!config) return
-
-    // Select de obras sociales
-    const selectObra = document.getElementById('n-obra')
-    selectObra.innerHTML = '<option value="">Seleccioná cobertura...</option>'
-    config.obrasSociales.forEach(os => {
-      const opt = document.createElement('option')
-      opt.value = os; opt.textContent = os
-      selectObra.appendChild(opt)
+    // Select obras sociales (nuevo turno y edición)
+    ;['n-obra','ed-obra'].forEach(id => {
+      const s = document.getElementById(id)
+      if (!s) return
+      s.innerHTML = '<option value="">Seleccioná cobertura...</option>'
+      config.obrasSociales.forEach(os => { const o=document.createElement('option'); o.value=o.textContent=os; s.appendChild(o) })
     })
-
-    // Select de horarios
-    const selectHora = document.getElementById('n-hora')
-    selectHora.innerHTML = '<option value="">Seleccioná horario...</option>'
-    config.horarios.forEach(h => {
-      const opt = document.createElement('option')
-      opt.value = h; opt.textContent = h
-      selectHora.appendChild(opt)
+    // Select horarios (nuevo turno y edición)
+    ;['n-hora','ed-hora'].forEach(id => {
+      const s = document.getElementById(id)
+      if (!s) return
+      s.innerHTML = '<option value="">Seleccioná horario...</option>'
+      config.horarios.forEach(h => { const o=document.createElement('option'); o.value=o.textContent=h; s.appendChild(o) })
     })
   }
 
@@ -452,32 +468,24 @@
     const email = document.getElementById('f-email').value.trim()
     const pass  = document.getElementById('f-pass').value
     const errEl = document.getElementById('login-error')
-    errEl.style.display = 'none'
+    errEl.style.display='none'
     if (!email||!pass) { errEl.textContent='Completá email y contraseña'; errEl.style.display='block'; return }
-
     const btn = document.getElementById('btn-login')
     btn.textContent='Ingresando...'; btn.disabled=true
     try {
-      const r = await fetch(API+'/login', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({email,password:pass})
-      })
+      const r = await fetch(API+'/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})})
       const d = await r.json()
       if (!r.ok) { errEl.textContent=d.error||'Error al ingresar'; errEl.style.display='block'; return }
-      token = d.token; usuario = d.usuario
-      localStorage.setItem('cia_token', token)
-      localStorage.setItem('cia_user', JSON.stringify(usuario))
+      token=d.token; usuario=d.usuario
+      localStorage.setItem('cia_token',token); localStorage.setItem('cia_user',JSON.stringify(usuario))
       arrancarApp()
     } catch { errEl.textContent='No se pudo conectar'; errEl.style.display='block' }
     finally { btn.textContent='Ingresar'; btn.disabled=false }
   })
-  document.getElementById('f-pass').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('btn-login').click() })
+  document.getElementById('f-pass').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('btn-login').click() })
   document.getElementById('btn-logout').addEventListener('click', logout)
-
   function logout() {
-    localStorage.removeItem('cia_token')
-    localStorage.removeItem('cia_user')
-    localStorage.removeItem('cia_config')
+    localStorage.removeItem('cia_token'); localStorage.removeItem('cia_user'); localStorage.removeItem('cia_config')
     token=null; usuario=null; config=null
     document.getElementById('app').style.display='none'
     document.getElementById('login-screen').style.display='flex'
@@ -489,76 +497,65 @@
     document.getElementById('app').style.display='block'
     document.getElementById('sb-nombre').textContent = usuario.nombre
     document.getElementById('sb-rol').textContent = {admin:'Administrador',medico:'Médico/a',secretaria:'Secretaría'}[usuario.rol]||usuario.rol
-
-    // Cargar config del cliente (obras sociales y horarios)
-    cargarConfig().then(() => {
-      document.getElementById('sb-clinica').textContent = config?.nombre || '—'
-    })
-
+    // Mostrar sección admin solo a admins
+    if (usuario.rol==='admin') {
+      document.querySelectorAll('.admin-only').forEach(el=>el.style.display='flex')
+    }
+    cargarConfig()
     cargar()
   }
 
   // ── NAVEGACIÓN ────────────────────────────────────────────────────────────────
+  function activarPagina(nombre) {
+    document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'))
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
+    const navBtn = document.querySelector(`[data-page="${nombre}"]`)
+    if (navBtn) navBtn.classList.add('active')
+    document.getElementById(`page-${nombre}`).classList.add('active')
+  }
   document.querySelectorAll('.nav-item[data-page]').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'))
-      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
-      btn.classList.add('active')
-      document.getElementById('page-'+btn.dataset.page).classList.add('active')
+      activarPagina(btn.dataset.page)
       if (btn.dataset.page==='turnos') cargar()
-      if (btn.dataset.page==='nuevo') {
-        document.getElementById('n-fecha').value = fmt(new Date())
-        // Si la config ya está cargada, llenar selects. Si no, cargarla.
-        if (config) llenarSelects()
-        else cargarConfig()
-      }
+      if (btn.dataset.page==='nuevo') { document.getElementById('n-fecha').value=fmt(new Date()); if(config) { llenarSelects() } else { cargarConfig() } }
+      if (btn.dataset.page==='historial') cargarHistorial()
+      if (btn.dataset.page==='usuarios') cargarUsuarios()
     })
   })
 
   // ── TOGGLE VISTA ──────────────────────────────────────────────────────────────
   document.getElementById('btn-dia').addEventListener('click', () => {
     vista='dia'
-    document.getElementById('btn-dia').classList.add('active')
-    document.getElementById('btn-semana').classList.remove('active')
-    document.getElementById('vista-dia').style.display='block'
-    document.getElementById('vista-semana').style.display='none'
-    document.getElementById('stats-wrap').style.display='grid'
-    cargar()
+    document.getElementById('btn-dia').classList.add('active'); document.getElementById('btn-semana').classList.remove('active')
+    document.getElementById('vista-dia').style.display='block'; document.getElementById('vista-semana').style.display='none'
+    document.getElementById('stats-wrap').style.display='grid'; cargar()
   })
   document.getElementById('btn-semana').addEventListener('click', () => {
     vista='semana'
-    document.getElementById('btn-semana').classList.add('active')
-    document.getElementById('btn-dia').classList.remove('active')
-    document.getElementById('vista-semana').style.display='block'
-    document.getElementById('vista-dia').style.display='none'
-    document.getElementById('stats-wrap').style.display='none'
-    cargar()
+    document.getElementById('btn-semana').classList.add('active'); document.getElementById('btn-dia').classList.remove('active')
+    document.getElementById('vista-semana').style.display='block'; document.getElementById('vista-dia').style.display='none'
+    document.getElementById('stats-wrap').style.display='none'; cargar()
   })
-
-  // ── NAV FECHAS ────────────────────────────────────────────────────────────────
-  document.getElementById('btn-prev').addEventListener('click', () => { fecha.setDate(fecha.getDate()+(vista==='dia'?-1:-7)); cargar() })
-  document.getElementById('btn-next').addEventListener('click', () => { fecha.setDate(fecha.getDate()+(vista==='dia'?1:7));  cargar() })
-  document.getElementById('btn-hoy').addEventListener('click',  () => { fecha=new Date(); cargar() })
+  document.getElementById('btn-prev').addEventListener('click', ()=>{ fecha.setDate(fecha.getDate()+(vista==='dia'?-1:-7)); cargar() })
+  document.getElementById('btn-next').addEventListener('click', ()=>{ fecha.setDate(fecha.getDate()+(vista==='dia'?1:7)); cargar() })
+  document.getElementById('btn-hoy').addEventListener('click',  ()=>{ fecha=new Date(); cargar() })
 
   // ── CARGAR TURNOS ─────────────────────────────────────────────────────────────
   async function cargar() {
     if (vista==='dia') {
+      const dur = config?.duracionMinutos ? ` · Turnos de ${config.duracionMinutos} min` : ''
       document.getElementById('fecha-label').textContent = fmtDisplay(fecha)
-      document.getElementById('page-sub').textContent = fmt(fecha)===fmt(new Date())?'Hoy':fmtDisplay(fecha)
+      document.getElementById('page-sub').textContent = (fmt(fecha)===fmt(new Date())?'Hoy':fmtDisplay(fecha)) + dur
       document.getElementById('slots-container').innerHTML = '<div class="loading">Cargando...</div>'
-      try {
-        const r = await api('/turnos?fecha='+fmt(fecha))
-        renderDia(await r.json())
-      } catch(e) { if(e.message!=='Sesión expirada') toast('Error al cargar turnos','err') }
+      try { renderDia(await (await api('/turnos?fecha='+fmt(fecha))).json()) }
+      catch(e) { if(e.message!=='Sesión expirada') toast('Error al cargar turnos','err') }
     } else {
-      const l = lunes(fecha), s = sabado(l)
+      const l=lunes(fecha), s=sabado(l)
       document.getElementById('fecha-label').textContent =
         `Semana del ${l.toLocaleDateString('es-AR',{day:'numeric',month:'short'})} al ${s.toLocaleDateString('es-AR',{day:'numeric',month:'short',year:'numeric'})}`
-      document.getElementById('semana-grid').innerHTML = '<div class="loading" style="grid-column:1/-1;padding:40px;text-align:center;color:var(--muted)">Cargando...</div>'
-      try {
-        const r = await api(`/turnos?semanaInicio=${fmt(l)}&semanaFin=${fmt(s)}`)
-        renderSemana(await r.json(), l)
-      } catch(e) { if(e.message!=='Sesión expirada') toast('Error al cargar semana','err') }
+      document.getElementById('semana-grid').innerHTML='<div class="loading" style="grid-column:1/-1;padding:40px;text-align:center;color:var(--muted)">Cargando...</div>'
+      try { renderSemana(await (await api(`/turnos?semanaInicio=${fmt(l)}&semanaFin=${fmt(s)}`)).json(), l) }
+      catch(e) { if(e.message!=='Sesión expirada') toast('Error al cargar semana','err') }
     }
   }
 
@@ -567,156 +564,136 @@
     document.getElementById('st-total').textContent  = turnos.length
     document.getElementById('st-agente').textContent = turnos.filter(t=>t.origen==='agente').length
     document.getElementById('st-sec').textContent    = turnos.filter(t=>t.origen==='secretaria').length
-
     const c = document.getElementById('slots-container')
-
-    if (turnos.length === 0) {
-      c.innerHTML = '<div class="empty"><div class="empty-icon">📅</div><div>Sin turnos para este día</div></div>'
-      return
-    }
-
-    turnos.sort((a,b) => fmtHora(a.horario).localeCompare(fmtHora(b.horario)))
-    c.innerHTML = ''
-
+    if (turnos.length===0) { c.innerHTML='<div class="empty"><div class="empty-icon">📅</div><div>Sin turnos para este día</div></div>'; return }
+    turnos.sort((a,b)=>fmtHora(a.horario).localeCompare(fmtHora(b.horario)))
+    c.innerHTML=''
     turnos.forEach(t => {
       const slot = document.createElement('div')
-      slot.className = 'slot'
-      slot.innerHTML = `
+      slot.className='slot'
+      slot.innerHTML=`
         <div class="slot-hora">${fmtHora(t.horario)}</div>
         <div class="slot-info" style="flex:1">
           <div class="slot-paciente">${t.paciente_nombre}</div>
-          <div class="slot-det">${t.paciente_dni ? 'DNI '+t.paciente_dni+' · ' : ''}${t.obra_social || 'Sin cobertura'}</div>
+          <div class="slot-det">${t.paciente_dni?'DNI '+t.paciente_dni+' · ':''}${t.obra_social||'Sin cobertura'}</div>
         </div>
         <span class="badge ${t.origen==='agente'?'badge-agente':'badge-secretaria'}">${t.origen==='agente'?'🤖 Agente':'👤 Secretaría'}</span>
-        <button class="btn btn-danger" onclick="event.stopPropagation();confirmarCancel(${t.id},'${t.paciente_nombre.replace(/'/g,"\'")}')">Cancelar</button>
+        <button class="btn btn-danger" onclick="event.stopPropagation();confirmarCancel(${t.id},'${t.paciente_nombre.replace(/'/g,"\\'")}')">Cancelar</button>
       `
-      slot.addEventListener('click', () => abrirDetalle(t))
+      slot.addEventListener('click', ()=>abrirDetalle(t))
       c.appendChild(slot)
     })
   }
 
-  // ── MODAL DETALLE ─────────────────────────────────────────────────────────────
-  let turnoActivo = null
-
-  function abrirDetalle(t) {
-    turnoActivo = t
-    const fechaFmt = t.fecha_turno
-      ? new Date(t.fecha_turno+'T12:00:00').toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'})
-      : '—'
-    document.getElementById('md-nombre').textContent   = t.paciente_nombre
-    document.getElementById('md-hora').textContent     = fmtHora(t.horario) + ' · ' + fechaFmt
-    document.getElementById('md-dni').textContent      = t.paciente_dni      || '—'
-    document.getElementById('md-tel').textContent      = t.paciente_telefono || '—'
-    document.getElementById('md-obra').textContent     = t.obra_social       || '—'
-    document.getElementById('md-afiliado').textContent = t.numero_afiliado   || '—'
-    document.getElementById('md-motivo').textContent   = t.motivo            || '—'
-    document.getElementById('md-origen').textContent   = t.origen === 'agente' ? '🤖 Agente IA' : '👤 Secretaría'
-    document.getElementById('md-cargado').textContent  = t.cargado_por       || '—'
-    document.getElementById('modal-detalle').classList.add('open')
-  }
-
-  function cerrarModal() {
-    document.getElementById('modal-detalle').classList.remove('open')
-    turnoActivo = null
-  }
-
   // ── RENDER SEMANA ─────────────────────────────────────────────────────────────
   function renderSemana(turnos, lun) {
-    const hoy  = fmt(new Date())
-    const mapa = {}
-    const horasSet = new Set(config?.horarios || ['09:00','10:00','11:00','15:00','16:00'])
-
-    turnos.forEach(t => {
-      const f = t.fecha_turno ? String(t.fecha_turno).slice(0,10) : ''
-      const h = fmtHora(t.horario)
-      mapa[`${f}_${h}`] = t
-      if (h) horasSet.add(h)
-    })
-
-    const horas = Array.from(horasSet).sort()
-    const dias  = Array.from({length:6}, (_,i) => { const d=new Date(lun); d.setDate(lun.getDate()+i); return d })
-    const grid  = document.getElementById('semana-grid')
-    grid.innerHTML = ''
-
-    // Celda vacía esquina
-    const empty = document.createElement('div')
-    empty.className = 'sg-empty'
-    grid.appendChild(empty)
-
-    // Headers de días
+    const hoy=fmt(new Date()), mapa={}, horasSet=new Set(config?.horarios||['09:00','10:00','11:00','15:00','16:00'])
+    turnos.forEach(t=>{ const f=t.fecha_turno?String(t.fecha_turno).slice(0,10):'', h=fmtHora(t.horario); mapa[`${f}_${h}`]=t; if(h) horasSet.add(h) })
+    const horas=Array.from(horasSet).sort()
+    const dias=Array.from({length:6},(_,i)=>{ const d=new Date(lun); d.setDate(lun.getDate()+i); return d })
+    const grid=document.getElementById('semana-grid')
+    grid.innerHTML=''
+    const empty=document.createElement('div'); empty.className='sg-empty'; grid.appendChild(empty)
     dias.forEach(d => {
-      const esHoy = fmt(d)===hoy
-      const h = document.createElement('div')
-      h.className = 'sg-header' + (esHoy?' hoy':'')
-      h.innerHTML = `<div class="sg-dia-nom">${DIAS[d.getDay()===0?6:d.getDay()-1]}</div><div class="sg-dia-num">${d.getDate()}</div>`
+      const h=document.createElement('div'); h.className='sg-header'+(fmt(d)===hoy?' hoy':'')
+      h.innerHTML=`<div class="sg-dia-nom">${DIAS[d.getDay()===0?6:d.getDay()-1]}</div><div class="sg-dia-num">${d.getDate()}</div>`
       grid.appendChild(h)
     })
-
-    // Filas de horarios
     horas.forEach(hora => {
-      const horaEl = document.createElement('div')
-      horaEl.className = 'sg-hora'
-      horaEl.textContent = hora
-      grid.appendChild(horaEl)
-
+      const he=document.createElement('div'); he.className='sg-hora'; he.textContent=hora; grid.appendChild(he)
       dias.forEach(d => {
-        const t = mapa[`${fmt(d)}_${hora}`]
-        const cell = document.createElement('div')
-
+        const t=mapa[`${fmt(d)}_${hora}`], cell=document.createElement('div')
         if (t) {
-          cell.className = 'sg-cell ocupado'
-          cell.style.cursor = 'pointer'
-          const inner = document.createElement('div')
-          inner.className = 'sg-turno' + (t.origen==='secretaria'?' secretaria':'')
-          inner.innerHTML = `<div style="font-weight:600">${t.paciente_nombre.split(' ')[0]}</div><div style="opacity:.75;font-size:10px">${t.obra_social||'Part.'}</div>`
+          cell.className='sg-cell ocupado'
+          const inner=document.createElement('div')
+          inner.className='sg-turno'+(t.origen==='secretaria'?' secretaria':'')
+          inner.innerHTML=`<div style="font-weight:600;font-size:11px">${t.paciente_nombre}</div><div style="opacity:.8;font-size:10px;margin-top:1px">${t.paciente_dni?'DNI '+t.paciente_dni:''}</div><div style="opacity:.75;font-size:10px">${t.obra_social||'Part.'}</div>`
           cell.appendChild(inner)
-          // Click abre modal de detalle
-          cell.addEventListener('click', () => abrirDetalle(t))
+          cell.addEventListener('click', ()=>abrirDetalle(t))
         } else {
-          cell.className = 'sg-cell'
-          const dStr = fmt(d)
-          cell.addEventListener('click', () => irANuevoConFechaHora(dStr, hora))
+          cell.className='sg-cell'
+          cell.addEventListener('click', ()=>irANuevoConFechaHora(fmt(d), hora))
         }
-
         grid.appendChild(cell)
       })
     })
   }
 
-  // ── CANCELAR ──────────────────────────────────────────────────────────────────
-  function confirmarCancel(id, nombre) {
-    if (!confirm(`¿Cancelar el turno de ${nombre}?`)) return
-    cancelarById(id)
+  // ── MODAL DETALLE ─────────────────────────────────────────────────────────────
+  function abrirDetalle(t) {
+    turnoActivo=t
+    const fechaFmt=t.fecha_turno?new Date(t.fecha_turno+'T12:00:00').toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'}):'—'
+    document.getElementById('md-nombre').textContent   = t.paciente_nombre
+    document.getElementById('md-hora').textContent     = fmtHora(t.horario)+' · '+fechaFmt
+    document.getElementById('md-dni').textContent      = t.paciente_dni      ||'—'
+    document.getElementById('md-tel').textContent      = t.paciente_telefono ||'—'
+    document.getElementById('md-obra').textContent     = t.obra_social       ||'—'
+    document.getElementById('md-afiliado').textContent = t.numero_afiliado   ||'—'
+    document.getElementById('md-motivo').textContent   = t.motivo            ||'—'
+    document.getElementById('md-origen').textContent   = t.origen==='agente'?'🤖 Agente IA':'👤 Secretaría'
+    document.getElementById('md-cargado').textContent  = t.cargado_por       ||'—'
+    // Volver a vista (por si estaba en edición)
+    document.getElementById('md-vista').style.display='block'
+    document.getElementById('md-edicion').style.display='none'
+    document.getElementById('modal-detalle').classList.add('open')
   }
+  function cerrarModalDetalle() { document.getElementById('modal-detalle').classList.remove('open'); turnoActivo=null }
+  document.getElementById('btn-md-close').addEventListener('click', cerrarModalDetalle)
+  document.getElementById('btn-md-cerrar').addEventListener('click', cerrarModalDetalle)
+  document.getElementById('modal-detalle').addEventListener('click', e=>{ if(e.target===e.currentTarget) cerrarModalDetalle() })
+  document.getElementById('btn-md-cancelar').addEventListener('click', ()=>{
+    if (!turnoActivo) return
+    const t=turnoActivo; cerrarModalDetalle(); confirmarCancel(t.id, t.paciente_nombre)
+  })
+  // Abrir edición
+  document.getElementById('btn-md-editar').addEventListener('click', ()=>{
+    if (!turnoActivo) return
+    const t=turnoActivo
+    llenarSelects()
+    document.getElementById('ed-fecha').value   = t.fecha_turno ? String(t.fecha_turno).slice(0,10) : ''
+    document.getElementById('ed-hora').value    = fmtHora(t.horario)
+    document.getElementById('ed-obra').value    = t.obra_social||''
+    document.getElementById('ed-tel').value     = t.paciente_telefono||''
+    document.getElementById('ed-motivo').value  = t.motivo||''
+    document.getElementById('md-vista').style.display='none'
+    document.getElementById('md-edicion').style.display='block'
+  })
+  document.getElementById('btn-ed-cancelar').addEventListener('click', ()=>{
+    document.getElementById('md-vista').style.display='block'
+    document.getElementById('md-edicion').style.display='none'
+  })
+  document.getElementById('btn-ed-guardar').addEventListener('click', async ()=>{
+    if (!turnoActivo) return
+    const fecha    = document.getElementById('ed-fecha').value
+    const horario  = document.getElementById('ed-hora').value
+    const obraSocial = document.getElementById('ed-obra').value
+    const telefono = document.getElementById('ed-tel').value.trim()
+    const motivo   = document.getElementById('ed-motivo').value.trim()
+    if (!fecha||!horario||!obraSocial) { toast('Fecha, horario y cobertura son obligatorios','err'); return }
+    const btn=document.getElementById('btn-ed-guardar'); btn.textContent='Guardando...'; btn.disabled=true
+    try {
+      const r=await api('/turnos/'+turnoActivo.id,{method:'PATCH',body:JSON.stringify({fecha,horario,obraSocial,telefono,motivo})})
+      if (r.ok) { toast('✅ Turno actualizado'); cerrarModalDetalle(); cargar() }
+      else { const d=await r.json(); toast(d.error||'Error','err') }
+    } catch(e) { if(e.message!=='Sesión expirada') toast('Error de conexión','err') }
+    finally { btn.textContent='Guardar cambios'; btn.disabled=false }
+  })
+
+  // ── CANCELAR ──────────────────────────────────────────────────────────────────
+  function confirmarCancel(id, nombre) { if(confirm(`¿Cancelar el turno de ${nombre}?`)) cancelarById(id) }
   async function cancelarById(id) {
     try {
-      const r = await api('/turnos/'+id, {method:'DELETE'})
+      const r=await api('/turnos/'+id,{method:'DELETE'})
       if (r.ok) { toast('Turno cancelado'); cargar() }
       else { const d=await r.json(); toast(d.error||'Error','err') }
     } catch(e) { if(e.message!=='Sesión expirada') toast('Error al cancelar','err') }
   }
 
-  // ── HELPERS NAV NUEVO TURNO ───────────────────────────────────────────────────
-  function irANuevoConHora(hora) {
-    activarPagina('nuevo')
-    document.getElementById('n-fecha').value = fmt(fecha)
-    document.getElementById('n-hora').value  = hora
-  }
-  function irANuevoConFechaHora(f, hora) {
-    activarPagina('nuevo')
-    document.getElementById('n-fecha').value = f
-    document.getElementById('n-hora').value  = hora
-  }
-  function activarPagina(nombre) {
-    document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'))
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
-    document.querySelector(`[data-page="${nombre}"]`).classList.add('active')
-    document.getElementById(`page-${nombre}`).classList.add('active')
-    if (nombre==='nuevo' && config) llenarSelects()
-  }
+  // ── NUEVO TURNO ───────────────────────────────────────────────────────────────
+  function irANuevoConHora(hora)         { activarPagina('nuevo'); document.getElementById('n-fecha').value=fmt(fecha); document.getElementById('n-hora').value=hora }
+  function irANuevoConFechaHora(f, hora) { activarPagina('nuevo'); document.getElementById('n-fecha').value=f; document.getElementById('n-hora').value=hora; if(config) llenarSelects() }
 
-  // ── GUARDAR TURNO ─────────────────────────────────────────────────────────────
-  document.getElementById('btn-guardar').addEventListener('click', async () => {
+  document.getElementById('btn-guardar').addEventListener('click', async ()=>{
     const nombre  = document.getElementById('n-nombre').value.trim()
     const dni     = document.getElementById('n-dni').value.trim()
     const tel     = document.getElementById('n-tel').value.trim()
@@ -725,50 +702,169 @@
     const motivo  = document.getElementById('n-motivo').value.trim()
     const f       = document.getElementById('n-fecha').value
     const hora    = document.getElementById('n-hora').value
-
-    if (!nombre || !dni || !obra || !f || !hora) {
-      toast('Completá los campos obligatorios: nombre, DNI, cobertura, fecha y horario', 'err')
-      return
-    }
-
-    const btn = document.getElementById('btn-guardar')
-    btn.textContent='Guardando...'; btn.disabled=true
-
+    if (!nombre||!dni||!obra||!f||!hora) { toast('Completá: nombre, DNI, cobertura, fecha y horario','err'); return }
+    const btn=document.getElementById('btn-guardar'); btn.textContent='Guardando...'; btn.disabled=true
     try {
-      const r = await api('/turnos', {
-        method:'POST',
-        body: JSON.stringify({ nombre, dni, telefono:tel, obraSocial:obra, afiliado:afil, motivo, fecha:f, horario:hora })
-      })
-      const d = await r.json()
+      const r=await api('/turnos',{method:'POST',body:JSON.stringify({nombre,dni,telefono:tel,obraSocial:obra,afiliado:afil,motivo,fecha:f,horario:hora})})
+      const d=await r.json()
       if (r.ok) {
         toast(`✅ Turno de ${nombre} guardado`)
-        ;['n-nombre','n-dni','n-tel','n-afiliado','n-motivo'].forEach(id => document.getElementById(id).value='')
-        document.getElementById('n-obra').value = ''
-        document.getElementById('n-hora').value = ''
-        fecha = new Date(f+'T12:00:00')
-        activarPagina('turnos')
-        cargar()
-      } else {
-        toast(d.error||'Error al guardar','err')
-      }
+        ;['n-nombre','n-dni','n-tel','n-afiliado','n-motivo'].forEach(id=>document.getElementById(id).value='')
+        document.getElementById('n-obra').value=''; document.getElementById('n-hora').value=''
+        fecha=new Date(f+'T12:00:00'); activarPagina('turnos'); cargar()
+      } else toast(d.error||'Error','err')
     } catch(e) { if(e.message!=='Sesión expirada') toast('Error de conexión','err') }
     finally { btn.textContent='Guardar turno'; btn.disabled=false }
   })
 
-  // ── LISTENERS MODAL (aquí, después de que el DOM ya existe) ─────────────────────
-  document.getElementById('btn-modal-cerrar').addEventListener('click', cerrarModal)
-  document.getElementById('btn-modal-close').addEventListener('click', cerrarModal)
-  document.getElementById('modal-detalle').addEventListener('click', function(e) {
-    if (e.target === this) cerrarModal()
+  // ── HISTORIAL ─────────────────────────────────────────────────────────────────
+  async function cargarHistorial() {
+    document.getElementById('hist-tbody').innerHTML='<tr><td colspan="7" class="loading">Cargando...</td></tr>'
+    try {
+      const r=await api('/turnos?historial=1')
+      historialData=await r.json()
+      renderHistorial(historialData)
+    } catch(e) { if(e.message!=='Sesión expirada') toast('Error al cargar historial','err') }
+  }
+  function renderHistorial(data) {
+    const tbody=document.getElementById('hist-tbody')
+    if (data.length===0) { tbody.innerHTML='<tr><td colspan="7" class="empty" style="padding:30px">Sin registros</td></tr>'; return }
+    tbody.innerHTML=data.map(t => {
+      const fechaFmt = t.fecha_turno ? new Date(t.fecha_turno+'T12:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'}) : '—'
+      const estadoBadge = t.estado==='cancelado'
+        ? '<span class="badge badge-cancelado">Cancelado</span>'
+        : '<span class="badge" style="background:#6b7fa318;border:1px solid #6b7fa344;color:var(--muted)">Pasado</span>'
+      const origenBadge = t.origen==='agente'
+        ? '<span class="badge badge-agente">🤖 Agente</span>'
+        : '<span class="badge badge-secretaria">👤 Secretaría</span>'
+      return `<tr>
+        <td>${fechaFmt}</td>
+        <td><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent)">${fmtHora(t.horario)}</span></td>
+        <td style="font-weight:500">${t.paciente_nombre}</td>
+        <td style="color:var(--muted)">${t.paciente_dni||'—'}</td>
+        <td>${t.obra_social||'—'}</td>
+        <td>${estadoBadge}</td>
+        <td>${origenBadge}</td>
+      </tr>`
+    }).join('')
+  }
+  // Filtros historial
+  function filtrarHistorial() {
+    const buscar = document.getElementById('hist-buscar').value.toLowerCase()
+    const desde  = document.getElementById('hist-desde').value
+    const hasta  = document.getElementById('hist-hasta').value
+    const filtrado = historialData.filter(t => {
+      const matchBuscar = !buscar || t.paciente_nombre.toLowerCase().includes(buscar) || (t.paciente_dni||'').includes(buscar)
+      const matchDesde  = !desde  || String(t.fecha_turno).slice(0,10) >= desde
+      const matchHasta  = !hasta  || String(t.fecha_turno).slice(0,10) <= hasta
+      return matchBuscar && matchDesde && matchHasta
+    })
+    renderHistorial(filtrado)
+  }
+  document.getElementById('hist-buscar').addEventListener('input', filtrarHistorial)
+  document.getElementById('hist-desde').addEventListener('change', filtrarHistorial)
+  document.getElementById('hist-hasta').addEventListener('change', filtrarHistorial)
+  document.getElementById('hist-limpiar').addEventListener('click', ()=>{
+    ;['hist-buscar','hist-desde','hist-hasta'].forEach(id=>document.getElementById(id).value='')
+    renderHistorial(historialData)
   })
-  document.getElementById('btn-modal-cancelar').addEventListener('click', () => {
-    if (!turnoActivo) return
-    const t = turnoActivo
-    cerrarModal()
-    confirmarCancel(t.id, t.paciente_nombre)
+
+  // ── USUARIOS ──────────────────────────────────────────────────────────────────
+  async function cargarUsuarios() {
+    document.getElementById('usuarios-tbody').innerHTML='<tr><td colspan="5" class="loading">Cargando...</td></tr>'
+    try {
+      const r=await api('/usuarios')
+      if (!r.ok) { toast('Sin acceso','err'); return }
+      const usuarios=await r.json()
+      const tbody=document.getElementById('usuarios-tbody')
+      if (usuarios.length===0) { tbody.innerHTML='<tr><td colspan="5" class="empty" style="padding:30px">Sin usuarios</td></tr>'; return }
+      tbody.innerHTML=usuarios.map(u => {
+        const rolBadge = {admin:`<span class="rol-badge rol-admin">Admin</span>`,medico:`<span class="rol-badge rol-medico">Médico/a</span>`,secretaria:`<span class="rol-badge rol-secretaria">Secretaría</span>`}[u.rol]||u.rol
+        const estadoBadge = u.activo
+          ? '<span class="estado-badge estado-activo">Activo</span>'
+          : '<span class="estado-badge estado-inactivo">Inactivo</span>'
+        const esSelf = u.id===usuario.id
+        const toggleBtn = esSelf ? '' : `<button class="btn-ghost ${u.activo?'danger':''}" onclick="toggleUsuario(${u.id},${!u.activo})">${u.activo?'Desactivar':'Activar'}</button>`
+        return `<tr>
+          <td style="font-weight:500">${u.nombre}${esSelf?' <span style="color:var(--muted);font-size:11px">(vos)</span>':''}</td>
+          <td style="color:var(--muted)">${u.email}</td>
+          <td>${rolBadge}</td>
+          <td>${estadoBadge}</td>
+          <td>${toggleBtn}</td>
+        </tr>`
+      }).join('')
+    } catch(e) { if(e.message!=='Sesión expirada') toast('Error al cargar usuarios','err') }
+  }
+  async function toggleUsuario(id, activo) {
+    try {
+      const r=await api('/usuarios/'+id+'/activo',{method:'PATCH',body:JSON.stringify({activo})})
+      if (r.ok) { toast(activo?'Usuario activado':'Usuario desactivado'); cargarUsuarios() }
+      else { const d=await r.json(); toast(d.error||'Error','err') }
+    } catch(e) { if(e.message!=='Sesión expirada') toast('Error','err') }
+  }
+
+  // Modal nuevo usuario
+  document.getElementById('btn-nuevo-usuario').addEventListener('click', ()=>{
+    ;['mu-nombre','mu-email','mu-pass'].forEach(id=>document.getElementById(id).value='')
+    document.getElementById('mu-error').style.display='none'
+    document.getElementById('modal-usuario').classList.add('open')
   })
-  // Cerrar con Escape
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarModal() })
+  document.getElementById('btn-mu-close').addEventListener('click',   ()=>document.getElementById('modal-usuario').classList.remove('open'))
+  document.getElementById('btn-mu-cancelar').addEventListener('click',()=>document.getElementById('modal-usuario').classList.remove('open'))
+  document.getElementById('modal-usuario').addEventListener('click',  e=>{ if(e.target===e.currentTarget) document.getElementById('modal-usuario').classList.remove('open') })
+  document.getElementById('btn-mu-guardar').addEventListener('click', async ()=>{
+    const nombre=document.getElementById('mu-nombre').value.trim()
+    const email =document.getElementById('mu-email').value.trim()
+    const pass  =document.getElementById('mu-pass').value
+    const rol   =document.getElementById('mu-rol').value
+    const errEl =document.getElementById('mu-error')
+    errEl.style.display='none'
+    if (!nombre||!email||!pass) { errEl.textContent='Todos los campos son requeridos'; errEl.style.display='block'; return }
+    if (pass.length<8) { errEl.textContent='La contraseña debe tener al menos 8 caracteres'; errEl.style.display='block'; return }
+    const btn=document.getElementById('btn-mu-guardar'); btn.textContent='Creando...'; btn.disabled=true
+    try {
+      const r=await api('/usuarios',{method:'POST',body:JSON.stringify({nombre,email,password:pass,rol})})
+      const d=await r.json()
+      if (r.ok) { toast(`✅ Usuario ${nombre} creado`); document.getElementById('modal-usuario').classList.remove('open'); cargarUsuarios() }
+      else { errEl.textContent=d.error||'Error'; errEl.style.display='block' }
+    } catch(e) { if(e.message!=='Sesión expirada') toast('Error de conexión','err') }
+    finally { btn.textContent='Crear usuario'; btn.disabled=false }
+  })
+
+  // ── CAMBIAR CONTRASEÑA ────────────────────────────────────────────────────────
+  document.getElementById('btn-pass').addEventListener('click', ()=>{
+    ;['mp-actual','mp-nueva','mp-confirmar'].forEach(id=>document.getElementById(id).value='')
+    document.getElementById('mp-error').style.display='none'
+    document.getElementById('modal-pass').classList.add('open')
+  })
+  document.getElementById('btn-mp-close').addEventListener('click',   ()=>document.getElementById('modal-pass').classList.remove('open'))
+  document.getElementById('btn-mp-cancelar').addEventListener('click',()=>document.getElementById('modal-pass').classList.remove('open'))
+  document.getElementById('modal-pass').addEventListener('click', e=>{ if(e.target===e.currentTarget) document.getElementById('modal-pass').classList.remove('open') })
+  document.getElementById('btn-mp-guardar').addEventListener('click', async ()=>{
+    const actual    = document.getElementById('mp-actual').value
+    const nueva     = document.getElementById('mp-nueva').value
+    const confirmar = document.getElementById('mp-confirmar').value
+    const errEl     = document.getElementById('mp-error')
+    errEl.style.display='none'
+    if (!actual||!nueva||!confirmar) { errEl.textContent='Completá todos los campos'; errEl.style.display='block'; return }
+    if (nueva!==confirmar) { errEl.textContent='Las contraseñas nuevas no coinciden'; errEl.style.display='block'; return }
+    if (nueva.length<8) { errEl.textContent='La nueva contraseña debe tener al menos 8 caracteres'; errEl.style.display='block'; return }
+    const btn=document.getElementById('btn-mp-guardar'); btn.textContent='Guardando...'; btn.disabled=true
+    try {
+      const r=await api('/usuarios/password',{method:'PATCH',body:JSON.stringify({actual,nueva})})
+      const d=await r.json()
+      if (r.ok) { toast('✅ Contraseña actualizada'); document.getElementById('modal-pass').classList.remove('open') }
+      else { errEl.textContent=d.error||'Error'; errEl.style.display='block' }
+    } catch(e) { if(e.message!=='Sesión expirada') toast('Error de conexión','err') }
+    finally { btn.textContent='Cambiar contraseña'; btn.disabled=false }
+  })
+
+  // Escape cierra cualquier modal abierto
+  document.addEventListener('keydown', e=>{
+    if (e.key==='Escape') {
+      ['modal-detalle','modal-usuario','modal-pass'].forEach(id=>document.getElementById(id).classList.remove('open'))
+    }
+  })
 
   // ── ARRANQUE ──────────────────────────────────────────────────────────────────
   if (token && usuario) arrancarApp()
