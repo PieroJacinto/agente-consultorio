@@ -135,6 +135,24 @@
     .empty{text-align:center;padding:50px 20px;color:var(--muted);}
     .empty-icon{font-size:44px;margin-bottom:10px;}
     .loading{text-align:center;padding:36px;color:var(--muted);font-style:italic;font-size:13px;}
+
+    /* MODAL DETALLE */
+    .modal-overlay{display:none;position:fixed;inset:0;background:#00000088;backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center;}
+    .modal-overlay.open{display:flex;}
+    .modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;width:100%;max-width:480px;box-shadow:0 20px 60px #00000066;}
+    .modal-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;}
+    .modal-title{font-family:'DM Serif Display',serif;font-size:22px;}
+    .modal-hora{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);margin-top:3px;}
+    .btn-modal-close{background:none;border:1px solid var(--border);color:var(--muted);width:30px;height:30px;border-radius:7px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;}
+    .btn-modal-close:hover{border-color:var(--danger);color:var(--danger);}
+    .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px;}
+    .modal-field label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:3px;display:block;}
+    .modal-field .val{font-size:14px;font-weight:500;}
+    .modal-field.full{grid-column:1/-1;}
+    .modal-footer{display:flex;gap:8px;justify-content:flex-end;padding-top:18px;border-top:1px solid var(--border);}
+    /* Slot clickeable */
+    .slot{cursor:pointer;transition:border-color .15s;}
+    .slot:hover{border-color:var(--accent);}
   </style>
 </head>
 <body>
@@ -295,6 +313,53 @@
     </div>
 
   </main>
+</div>
+
+<!-- MODAL DETALLE TURNO -->
+<div class="modal-overlay" id="modal-detalle">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="md-nombre">—</div>
+        <div class="modal-hora" id="md-hora">—</div>
+      </div>
+      <button class="btn-modal-close" id="btn-modal-close">✕</button>
+    </div>
+    <div class="modal-grid">
+      <div class="modal-field">
+        <label>DNI</label>
+        <div class="val" id="md-dni">—</div>
+      </div>
+      <div class="modal-field">
+        <label>Teléfono</label>
+        <div class="val" id="md-tel">—</div>
+      </div>
+      <div class="modal-field">
+        <label>Obra social / Cobertura</label>
+        <div class="val" id="md-obra">—</div>
+      </div>
+      <div class="modal-field">
+        <label>N° de afiliado</label>
+        <div class="val" id="md-afiliado">—</div>
+      </div>
+      <div class="modal-field full">
+        <label>Motivo de consulta</label>
+        <div class="val" id="md-motivo">—</div>
+      </div>
+      <div class="modal-field">
+        <label>Origen</label>
+        <div class="val" id="md-origen">—</div>
+      </div>
+      <div class="modal-field">
+        <label>Cargado por</label>
+        <div class="val" id="md-cargado">—</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" id="btn-modal-cancelar">Cancelar turno</button>
+      <button class="btn btn-outline" id="btn-modal-cerrar">Cerrar</button>
+    </div>
+  </div>
 </div>
 
 <div id="toasts"></div>
@@ -516,27 +581,43 @@
     turnos.forEach(t => {
       const slot = document.createElement('div')
       slot.className = 'slot'
-
-      const detalles = []
-      if (t.obra_social)       detalles.push(t.obra_social)
-      if (t.paciente_telefono) detalles.push('📞 '+t.paciente_telefono)
-      if (t.cargado_por)       detalles.push('Cargado por '+t.cargado_por)
-
-      const dniTag   = t.paciente_dni ? ` <span style="font-weight:400;color:var(--muted);font-size:12px">· DNI ${t.paciente_dni}</span>` : ''
-      const motivoTag = t.motivo ? `<div class="slot-det">💬 ${t.motivo}</div>` : ''
-
       slot.innerHTML = `
         <div class="slot-hora">${fmtHora(t.horario)}</div>
-        <div class="slot-info">
-          <div class="slot-paciente">${t.paciente_nombre}${dniTag}</div>
-          <div class="slot-det">${detalles.join(' · ')}</div>
-          ${motivoTag}
+        <div class="slot-info" style="flex:1">
+          <div class="slot-paciente">${t.paciente_nombre}</div>
+          <div class="slot-det">${t.paciente_dni ? 'DNI '+t.paciente_dni+' · ' : ''}${t.obra_social || 'Sin cobertura'}</div>
         </div>
         <span class="badge ${t.origen==='agente'?'badge-agente':'badge-secretaria'}">${t.origen==='agente'?'🤖 Agente':'👤 Secretaría'}</span>
-        <button class="btn btn-danger" onclick="confirmarCancel(${t.id},'${t.paciente_nombre.replace(/'/g,"\\'")}')">Cancelar</button>
+        <button class="btn btn-danger" onclick="event.stopPropagation();confirmarCancel(${t.id},'${t.paciente_nombre.replace(/'/g,"\'")}')">Cancelar</button>
       `
+      slot.addEventListener('click', () => abrirDetalle(t))
       c.appendChild(slot)
     })
+  }
+
+  // ── MODAL DETALLE ─────────────────────────────────────────────────────────────
+  let turnoActivo = null
+
+  function abrirDetalle(t) {
+    turnoActivo = t
+    const fechaFmt = t.fecha_turno
+      ? new Date(t.fecha_turno+'T12:00:00').toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'})
+      : '—'
+    document.getElementById('md-nombre').textContent   = t.paciente_nombre
+    document.getElementById('md-hora').textContent     = fmtHora(t.horario) + ' · ' + fechaFmt
+    document.getElementById('md-dni').textContent      = t.paciente_dni      || '—'
+    document.getElementById('md-tel').textContent      = t.paciente_telefono || '—'
+    document.getElementById('md-obra').textContent     = t.obra_social       || '—'
+    document.getElementById('md-afiliado').textContent = t.numero_afiliado   || '—'
+    document.getElementById('md-motivo').textContent   = t.motivo            || '—'
+    document.getElementById('md-origen').textContent   = t.origen === 'agente' ? '🤖 Agente IA' : '👤 Secretaría'
+    document.getElementById('md-cargado').textContent  = t.cargado_por       || '—'
+    document.getElementById('modal-detalle').classList.add('open')
+  }
+
+  function cerrarModal() {
+    document.getElementById('modal-detalle').classList.remove('open')
+    turnoActivo = null
   }
 
   // ── RENDER SEMANA ─────────────────────────────────────────────────────────────
